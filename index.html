@@ -1,192 +1,190 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blue Notes Manager</title>
+  <title>Biblia Azul</title>
 
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #071f3d, #0f4c81);
+      background:
+        radial-gradient(circle at top left, rgba(77, 184, 255, 0.35), transparent 35%),
+        linear-gradient(135deg, #03152e, #063b70, #0a6fae);
       color: white;
-      padding: 20px;
+      padding: 25px;
     }
 
     .container {
-      max-width: 900px;
+      width: 100%;
+      max-width: 950px;
       margin: auto;
     }
 
     header {
       text-align: center;
-      margin-bottom: 30px;
+      padding: 45px 20px 30px;
     }
 
-    header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-      color: #d9f1ff;
-    }
-
-    header p {
-      color: #b7ddf5;
-    }
-
-    .note-box {
-      background: rgba(255, 255, 255, 0.12);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-      margin-bottom: 30px;
-    }
-
-    .note-box input,
-    .note-box textarea {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border: none;
-      border-radius: 10px;
-      outline: none;
-      font-size: 1rem;
-    }
-
-    .note-box textarea {
-      resize: none;
-      height: 120px;
-    }
-
-    button {
-      border: none;
-      padding: 12px 18px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.2s;
-    }
-
-    .add-btn {
-      background: #38bdf8;
-      color: #04243d;
-      width: 100%;
-      font-size: 1rem;
-      margin-bottom: 10px;
-    }
-
-    .add-btn:hover {
-      background: #7dd3fc;
-    }
-
-    .cancel-btn {
-      background: #64748b;
-      color: white;
-      width: 100%;
-      font-size: 1rem;
-      display: none;
-    }
-
-    .cancel-btn:hover {
-      background: #475569;
-    }
-
-    .dashboard-title {
-      margin-bottom: 15px;
-      color: #d9f1ff;
-    }
-
-    .notes-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 18px;
-    }
-
-    .note-card {
-      background: #e0f2fe;
-      color: #082f49;
-      padding: 18px;
-      border-radius: 15px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-      animation: fadeIn 0.3s ease;
-    }
-
-    .note-card h3 {
-      margin-bottom: 10px;
-      color: #075985;
-    }
-
-    .note-card p {
-      line-height: 1.5;
-      margin-bottom: 15px;
-      white-space: pre-wrap;
-    }
-
-    .card-buttons {
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #8bd8ff, #1d7ed6);
       display: flex;
-      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.3rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
     }
 
-    .edit-btn {
-      background: #0ea5e9;
-      color: white;
-      font-size: 0.9rem;
-      flex: 1;
+    h1 {
+      font-size: clamp(2rem, 6vw, 4rem);
+      margin-bottom: 12px;
+      color: #e9f8ff;
     }
 
-    .edit-btn:hover {
-      background: #0284c7;
+    .subtitle {
+      max-width: 700px;
+      margin: auto;
+      color: #c7eaff;
+      line-height: 1.6;
+      font-size: 1.05rem;
     }
 
-    .delete-btn {
-      background: #ef4444;
-      color: white;
-      font-size: 0.9rem;
-      flex: 1;
+    .card {
+      margin-top: 30px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 28px;
+      padding: 28px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.32);
     }
 
-    .delete-btn:hover {
-      background: #dc2626;
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 20px;
     }
 
-    .empty-message {
-      text-align: center;
-      color: #b7ddf5;
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #d8f3ff;
+      font-weight: bold;
+    }
+
+    select {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 15px;
+      background: #e9f8ff;
+      color: #063b70;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
       margin-top: 20px;
-      font-style: italic;
+    }
+
+    button,
+    .link-btn {
+      border: none;
+      border-radius: 16px;
+      padding: 15px 22px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: 0.2s ease;
+    }
+
+    .primary {
+      background: linear-gradient(135deg, #ffffff, #bdeeff);
+      color: #064574;
+    }
+
+    .secondary {
+      background: rgba(255, 255, 255, 0.16);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    button:hover,
+    .link-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .quick-links {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 15px;
+    }
+
+    .quick-card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .quick-card h3 {
+      margin-bottom: 8px;
+      color: #e9f8ff;
+    }
+
+    .quick-card p {
+      color: #c7eaff;
+      line-height: 1.5;
+      margin-bottom: 14px;
     }
 
     footer {
       text-align: center;
-      margin-top: 40px;
-      color: #b7ddf5;
+      margin-top: 35px;
+      color: #bdeeff;
       font-size: 0.9rem;
+      line-height: 1.6;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 2rem;
+    @media (max-width: 700px) {
+      body {
+        padding: 16px;
       }
 
-      .card-buttons {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 22px;
+      }
+
+      .buttons {
         flex-direction: column;
+      }
+
+      button,
+      .link-btn {
+        width: 100%;
+        text-align: center;
       }
     }
   </style>
@@ -195,159 +193,205 @@
 <body>
   <div class="container">
     <header>
-      <h1>Blue Notes Manager</h1>
-      <p>Add, save, edit, and remove your notes from the dashboard.</p>
+      <div class="logo">📖</div>
+      <h1>Biblia Azul</h1>
+      <p class="subtitle">
+        Una página personal sencilla para abrir rápidamente la Biblia en línea desde jw.org y la Biblioteca en Línea Watchtower.
+      </p>
     </header>
 
-    <section class="note-box">
-      <input type="text" id="noteTitle" placeholder="Note title..." />
-      <textarea id="noteText" placeholder="Write your note here..."></textarea>
+    <main class="card">
+      <div class="grid">
+        <div>
+          <label for="book">Libro bíblico</label>
+          <select id="book"></select>
+        </div>
 
-      <button class="add-btn" id="mainBtn" onclick="addOrUpdateNote()">Add Note</button>
-      <button class="cancel-btn" id="cancelBtn" onclick="cancelEdit()">Cancel Edit</button>
-    </section>
+        <div>
+          <label for="chapter">Capítulo</label>
+          <select id="chapter"></select>
+        </div>
+      </div>
 
-    <h2 class="dashboard-title">Notes Dashboard</h2>
+      <div class="buttons">
+        <button class="primary" onclick="openChapter()">
+          Abrir capítulo
+        </button>
 
-    <section class="notes-grid" id="notesDashboard"></section>
+        <a
+          class="link-btn secondary"
+          href="https://www.jw.org/es/biblioteca/biblia/nwt/libros/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Abrir Biblia en jw.org
+        </a>
 
-    <p class="empty-message" id="emptyMessage">No notes yet. Add your first note above.</p>
+        <a
+          class="link-btn secondary"
+          href="https://wol.jw.org/es/wol/binav/r4/lp-s/nwt"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Abrir índice en WOL
+        </a>
+      </div>
+
+      <section class="quick-links">
+        <div class="quick-card">
+          <h3>Lectura rápida</h3>
+          <p>Selecciona un libro y un capítulo. Se abrirá en la página oficial.</p>
+          <a
+            class="link-btn primary"
+            href="https://wol.jw.org/es/wol/b/r4/lp-s/nwt/19/23"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Salmo 23
+          </a>
+        </div>
+
+        <div class="quick-card">
+          <h3>Evangelios</h3>
+          <p>Acceso rápido a Mateo capítulo 1.</p>
+          <a
+            class="link-btn primary"
+            href="https://wol.jw.org/es/wol/b/r4/lp-s/nwt/40/1"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Mateo 1
+          </a>
+        </div>
+
+        <div class="quick-card">
+          <h3>Buscar en jw.org</h3>
+          <p>Abre la búsqueda oficial de jw.org.</p>
+          <a
+            class="link-btn primary"
+            href="https://www.jw.org/es/b%C3%BAsquedas/?q=Biblia"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Buscar
+          </a>
+        </div>
+      </section>
+    </main>
 
     <footer>
-      <p>Made with HTML, CSS and JavaScript</p>
+      Página personal no oficial. Los enlaces abren contenido oficial en jw.org o wol.jw.org.
+      <br />
+      No se copia ni se almacena texto bíblico en esta página.
     </footer>
   </div>
 
   <script>
-    const titleInput = document.getElementById("noteTitle");
-    const textInput = document.getElementById("noteText");
-    const notesDashboard = document.getElementById("notesDashboard");
-    const emptyMessage = document.getElementById("emptyMessage");
-    const mainBtn = document.getElementById("mainBtn");
-    const cancelBtn = document.getElementById("cancelBtn");
+    const books = [
+      ["Génesis", 1, 50],
+      ["Éxodo", 2, 40],
+      ["Levítico", 3, 27],
+      ["Números", 4, 36],
+      ["Deuteronomio", 5, 34],
+      ["Josué", 6, 24],
+      ["Jueces", 7, 21],
+      ["Rut", 8, 4],
+      ["1 Samuel", 9, 31],
+      ["2 Samuel", 10, 24],
+      ["1 Reyes", 11, 22],
+      ["2 Reyes", 12, 25],
+      ["1 Crónicas", 13, 29],
+      ["2 Crónicas", 14, 36],
+      ["Esdras", 15, 10],
+      ["Nehemías", 16, 13],
+      ["Ester", 17, 10],
+      ["Job", 18, 42],
+      ["Salmos", 19, 150],
+      ["Proverbios", 20, 31],
+      ["Eclesiastés", 21, 12],
+      ["El Cantar de los Cantares", 22, 8],
+      ["Isaías", 23, 66],
+      ["Jeremías", 24, 52],
+      ["Lamentaciones", 25, 5],
+      ["Ezequiel", 26, 48],
+      ["Daniel", 27, 12],
+      ["Oseas", 28, 14],
+      ["Joel", 29, 3],
+      ["Amós", 30, 9],
+      ["Abdías", 31, 1],
+      ["Jonás", 32, 4],
+      ["Miqueas", 33, 7],
+      ["Nahúm", 34, 3],
+      ["Habacuc", 35, 3],
+      ["Sofonías", 36, 3],
+      ["Ageo", 37, 2],
+      ["Zacarías", 38, 14],
+      ["Malaquías", 39, 4],
+      ["Mateo", 40, 28],
+      ["Marcos", 41, 16],
+      ["Lucas", 42, 24],
+      ["Juan", 43, 21],
+      ["Hechos", 44, 28],
+      ["Romanos", 45, 16],
+      ["1 Corintios", 46, 16],
+      ["2 Corintios", 47, 13],
+      ["Gálatas", 48, 6],
+      ["Efesios", 49, 6],
+      ["Filipenses", 50, 4],
+      ["Colosenses", 51, 4],
+      ["1 Tesalonicenses", 52, 5],
+      ["2 Tesalonicenses", 53, 3],
+      ["1 Timoteo", 54, 6],
+      ["2 Timoteo", 55, 4],
+      ["Tito", 56, 3],
+      ["Filemón", 57, 1],
+      ["Hebreos", 58, 13],
+      ["Santiago", 59, 5],
+      ["1 Pedro", 60, 5],
+      ["2 Pedro", 61, 3],
+      ["1 Juan", 62, 5],
+      ["2 Juan", 63, 1],
+      ["3 Juan", 64, 1],
+      ["Judas", 65, 1],
+      ["Apocalipsis", 66, 22]
+    ];
 
-    let notes = JSON.parse(localStorage.getItem("notes")) || [];
-    let editingIndex = null;
+    const bookSelect = document.getElementById("book");
+    const chapterSelect = document.getElementById("chapter");
 
-    function saveNotes() {
-      localStorage.setItem("notes", JSON.stringify(notes));
-    }
+    books.forEach((book, index) => {
+      const option = document.createElement("option");
+      option.value = index;
+      option.textContent = book[0];
+      bookSelect.appendChild(option);
+    });
 
-    function renderNotes() {
-      notesDashboard.innerHTML = "";
+    function loadChapters() {
+      chapterSelect.innerHTML = "";
 
-      if (notes.length === 0) {
-        emptyMessage.style.display = "block";
-      } else {
-        emptyMessage.style.display = "none";
+      const selectedBook = books[bookSelect.value];
+      const chapters = selectedBook[2];
+
+      for (let i = 1; i <= chapters; i++) {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = "Capítulo " + i;
+        chapterSelect.appendChild(option);
       }
-
-      notes.forEach((note, index) => {
-        const noteCard = document.createElement("div");
-        noteCard.className = "note-card";
-
-        const noteTitle = document.createElement("h3");
-        noteTitle.textContent = note.title;
-
-        const noteText = document.createElement("p");
-        noteText.textContent = note.text;
-
-        const buttonsBox = document.createElement("div");
-        buttonsBox.className = "card-buttons";
-
-        const editBtn = document.createElement("button");
-        editBtn.className = "edit-btn";
-        editBtn.textContent = "Edit";
-        editBtn.onclick = function () {
-          editNote(index);
-        };
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.className = "delete-btn";
-        deleteBtn.textContent = "Remove";
-        deleteBtn.onclick = function () {
-          deleteNote(index);
-        };
-
-        buttonsBox.appendChild(editBtn);
-        buttonsBox.appendChild(deleteBtn);
-
-        noteCard.appendChild(noteTitle);
-        noteCard.appendChild(noteText);
-        noteCard.appendChild(buttonsBox);
-
-        notesDashboard.appendChild(noteCard);
-      });
     }
 
-    function addOrUpdateNote() {
-      const title = titleInput.value.trim();
-      const text = textInput.value.trim();
+    function openChapter() {
+      const selectedBook = books[bookSelect.value];
+      const bookNumber = selectedBook[1];
+      const chapter = chapterSelect.value;
 
-      if (title === "" || text === "") {
-        alert("Please write a title and a note.");
-        return;
-      }
-
-      if (editingIndex === null) {
-        notes.push({
-          title: title,
-          text: text
-        });
-      } else {
-        notes[editingIndex] = {
-          title: title,
-          text: text
-        };
-
-        editingIndex = null;
-        mainBtn.textContent = "Add Note";
-        cancelBtn.style.display = "none";
-      }
-
-      saveNotes();
-      renderNotes();
-
-      titleInput.value = "";
-      textInput.value = "";
+      const url = `https://wol.jw.org/es/wol/b/r4/lp-s/nwt/${bookNumber}/${chapter}`;
+      window.open(url, "_blank", "noopener,noreferrer");
     }
 
-    function editNote(index) {
-      titleInput.value = notes[index].title;
-      textInput.value = notes[index].text;
+    bookSelect.addEventListener("change", loadChapters);
 
-      editingIndex = index;
-      mainBtn.textContent = "Update Note";
-      cancelBtn.style.display = "block";
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    }
-
-    function cancelEdit() {
-      editingIndex = null;
-
-      titleInput.value = "";
-      textInput.value = "";
-
-      mainBtn.textContent = "Add Note";
-      cancelBtn.style.display = "none";
-    }
-
-    function deleteNote(index) {
-      notes.splice(index, 1);
-
-      if (editingIndex === index) {
-        cancelEdit();
-      }
-
-      saveNotes();
-      renderNotes();
-    }
-
-    renderNotes();
+    loadChapters();
   </script>
 </body>
 </html>
