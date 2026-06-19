@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blue Notes Manager</title>
+  <title>Blue Docs Opener</title>
 
   <style>
     * {
@@ -21,7 +21,7 @@
     }
 
     .container {
-      max-width: 900px;
+      max-width: 1000px;
       margin: auto;
     }
 
@@ -38,128 +38,156 @@
 
     header p {
       color: #b7ddf5;
+      line-height: 1.5;
     }
 
-    .note-box {
+    .upload-box {
       background: rgba(255, 255, 255, 0.12);
-      padding: 20px;
+      padding: 25px;
       border-radius: 15px;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-      margin-bottom: 30px;
+      margin-bottom: 25px;
+      text-align: center;
     }
 
-    .note-box input,
-    .note-box textarea {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border: none;
+    .file-label {
+      display: block;
+      background: #38bdf8;
+      color: #04243d;
+      padding: 14px 18px;
       border-radius: 10px;
-      outline: none;
-      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 15px;
+      transition: 0.2s;
     }
 
-    .note-box textarea {
-      resize: none;
-      height: 120px;
+    .file-label:hover {
+      background: #7dd3fc;
     }
 
-    button {
+    input[type="file"] {
+      display: none;
+    }
+
+    .file-info {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 15px;
+      text-align: left;
+      color: #d9f1ff;
+      display: none;
+    }
+
+    .file-info p {
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    button,
+    .download-link {
       border: none;
       padding: 12px 18px;
       border-radius: 10px;
       cursor: pointer;
       font-weight: bold;
       transition: 0.2s;
+      text-decoration: none;
+      text-align: center;
+      flex: 1;
+      min-width: 140px;
     }
 
-    .add-btn {
-      background: #38bdf8;
-      color: #04243d;
-      width: 100%;
-      font-size: 1rem;
-      margin-bottom: 10px;
-    }
-
-    .add-btn:hover {
-      background: #7dd3fc;
-    }
-
-    .cancel-btn {
-      background: #64748b;
+    .open-btn {
+      background: #0ea5e9;
       color: white;
-      width: 100%;
-      font-size: 1rem;
-      display: none;
     }
 
-    .cancel-btn:hover {
-      background: #475569;
+    .open-btn:hover {
+      background: #0284c7;
     }
 
-    .dashboard-title {
+    .download-link {
+      background: #22c55e;
+      color: white;
+    }
+
+    .download-link:hover {
+      background: #16a34a;
+    }
+
+    .clear-btn {
+      background: #ef4444;
+      color: white;
+    }
+
+    .clear-btn:hover {
+      background: #dc2626;
+    }
+
+    .preview-title {
       margin-bottom: 15px;
       color: #d9f1ff;
     }
 
-    .notes-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 18px;
+    .preview-box {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 15px;
+      padding: 20px;
+      min-height: 350px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
     }
 
-    .note-card {
+    .empty-preview {
+      text-align: center;
+      color: #b7ddf5;
+      font-style: italic;
+      margin-top: 120px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 650px;
+      border: none;
+      border-radius: 10px;
+      background: white;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+      margin: auto;
+      border-radius: 10px;
+    }
+
+    pre {
       background: #e0f2fe;
       color: #082f49;
       padding: 18px;
-      border-radius: 15px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-      animation: fadeIn 0.3s ease;
-    }
-
-    .note-card h3 {
-      margin-bottom: 10px;
-      color: #075985;
-    }
-
-    .note-card p {
-      line-height: 1.5;
-      margin-bottom: 15px;
+      border-radius: 10px;
       white-space: pre-wrap;
+      word-wrap: break-word;
+      max-height: 650px;
+      overflow: auto;
+      line-height: 1.5;
     }
 
-    .card-buttons {
-      display: flex;
-      gap: 10px;
-    }
-
-    .edit-btn {
-      background: #0ea5e9;
-      color: white;
-      font-size: 0.9rem;
-      flex: 1;
-    }
-
-    .edit-btn:hover {
-      background: #0284c7;
-    }
-
-    .delete-btn {
-      background: #ef4444;
-      color: white;
-      font-size: 0.9rem;
-      flex: 1;
-    }
-
-    .delete-btn:hover {
-      background: #dc2626;
-    }
-
-    .empty-message {
+    .unsupported {
+      background: #e0f2fe;
+      color: #082f49;
+      padding: 25px;
+      border-radius: 12px;
       text-align: center;
-      color: #b7ddf5;
-      margin-top: 20px;
-      font-style: italic;
+      line-height: 1.6;
     }
 
     footer {
@@ -169,23 +197,16 @@
       font-size: 0.9rem;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
     @media (max-width: 600px) {
       header h1 {
         font-size: 2rem;
       }
 
-      .card-buttons {
+      iframe {
+        height: 500px;
+      }
+
+      .buttons {
         flex-direction: column;
       }
     }
@@ -195,23 +216,37 @@
 <body>
   <div class="container">
     <header>
-      <h1>Blue Notes Manager</h1>
-      <p>Add, save, edit, and remove your notes from the dashboard.</p>
+      <h1>Blue Docs Opener</h1>
+      <p>Open and preview PDF files, images, text files, and common documents directly from your browser.</p>
     </header>
 
-    <section class="note-box">
-      <input type="text" id="noteTitle" placeholder="Note title..." />
-      <textarea id="noteText" placeholder="Write your note here..."></textarea>
+    <section class="upload-box">
+      <label for="fileInput" class="file-label">Choose a Document</label>
 
-      <button class="add-btn" id="mainBtn" onclick="addOrUpdateNote()">Add Note</button>
-      <button class="cancel-btn" id="cancelBtn" onclick="cancelEdit()">Cancel Edit</button>
+      <input
+        type="file"
+        id="fileInput"
+        accept=".pdf,.txt,.md,.html,.css,.js,.json,.jpg,.jpeg,.png,.gif,.webp,.svg,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+      />
+
+      <div class="file-info" id="fileInfo">
+        <p><strong>File name:</strong> <span id="fileName"></span></p>
+        <p><strong>File type:</strong> <span id="fileType"></span></p>
+        <p><strong>File size:</strong> <span id="fileSize"></span></p>
+
+        <div class="buttons">
+          <button class="open-btn" id="openBtn">Open in New Tab</button>
+          <a class="download-link" id="downloadBtn" download>Download File</a>
+          <button class="clear-btn" onclick="clearFile()">Clear</button>
+        </div>
+      </div>
     </section>
 
-    <h2 class="dashboard-title">Notes Dashboard</h2>
+    <h2 class="preview-title">Document Preview</h2>
 
-    <section class="notes-grid" id="notesDashboard"></section>
-
-    <p class="empty-message" id="emptyMessage">No notes yet. Add your first note above.</p>
+    <section class="preview-box" id="previewBox">
+      <p class="empty-preview">No document selected yet.</p>
+    </section>
 
     <footer>
       <p>Made with HTML, CSS and JavaScript</p>
@@ -219,135 +254,138 @@
   </div>
 
   <script>
-    const titleInput = document.getElementById("noteTitle");
-    const textInput = document.getElementById("noteText");
-    const notesDashboard = document.getElementById("notesDashboard");
-    const emptyMessage = document.getElementById("emptyMessage");
-    const mainBtn = document.getElementById("mainBtn");
-    const cancelBtn = document.getElementById("cancelBtn");
+    const fileInput = document.getElementById("fileInput");
+    const fileInfo = document.getElementById("fileInfo");
+    const fileName = document.getElementById("fileName");
+    const fileType = document.getElementById("fileType");
+    const fileSize = document.getElementById("fileSize");
+    const previewBox = document.getElementById("previewBox");
+    const openBtn = document.getElementById("openBtn");
+    const downloadBtn = document.getElementById("downloadBtn");
 
-    let notes = JSON.parse(localStorage.getItem("notes")) || [];
-    let editingIndex = null;
+    let currentFileUrl = null;
+    let currentFile = null;
 
-    function saveNotes() {
-      localStorage.setItem("notes", JSON.stringify(notes));
-    }
+    fileInput.addEventListener("change", function () {
+      const file = fileInput.files[0];
 
-    function renderNotes() {
-      notesDashboard.innerHTML = "";
-
-      if (notes.length === 0) {
-        emptyMessage.style.display = "block";
-      } else {
-        emptyMessage.style.display = "none";
-      }
-
-      notes.forEach((note, index) => {
-        const noteCard = document.createElement("div");
-        noteCard.className = "note-card";
-
-        const noteTitle = document.createElement("h3");
-        noteTitle.textContent = note.title;
-
-        const noteText = document.createElement("p");
-        noteText.textContent = note.text;
-
-        const buttonsBox = document.createElement("div");
-        buttonsBox.className = "card-buttons";
-
-        const editBtn = document.createElement("button");
-        editBtn.className = "edit-btn";
-        editBtn.textContent = "Edit";
-        editBtn.onclick = function () {
-          editNote(index);
-        };
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.className = "delete-btn";
-        deleteBtn.textContent = "Remove";
-        deleteBtn.onclick = function () {
-          deleteNote(index);
-        };
-
-        buttonsBox.appendChild(editBtn);
-        buttonsBox.appendChild(deleteBtn);
-
-        noteCard.appendChild(noteTitle);
-        noteCard.appendChild(noteText);
-        noteCard.appendChild(buttonsBox);
-
-        notesDashboard.appendChild(noteCard);
-      });
-    }
-
-    function addOrUpdateNote() {
-      const title = titleInput.value.trim();
-      const text = textInput.value.trim();
-
-      if (title === "" || text === "") {
-        alert("Please write a title and a note.");
+      if (!file) {
         return;
       }
 
-      if (editingIndex === null) {
-        notes.push({
-          title: title,
-          text: text
-        });
-      } else {
-        notes[editingIndex] = {
-          title: title,
-          text: text
+      currentFile = file;
+
+      if (currentFileUrl) {
+        URL.revokeObjectURL(currentFileUrl);
+      }
+
+      currentFileUrl = URL.createObjectURL(file);
+
+      fileInfo.style.display = "block";
+      fileName.textContent = file.name;
+      fileType.textContent = file.type || "Unknown type";
+      fileSize.textContent = formatFileSize(file.size);
+
+      openBtn.onclick = function () {
+        window.open(currentFileUrl, "_blank");
+      };
+
+      downloadBtn.href = currentFileUrl;
+      downloadBtn.download = file.name;
+
+      previewFile(file);
+    });
+
+    function previewFile(file) {
+      previewBox.innerHTML = "";
+
+      const fileExtension = getFileExtension(file.name);
+      const fileType = file.type;
+
+      if (fileType === "application/pdf" || fileExtension === "pdf") {
+        const iframe = document.createElement("iframe");
+        iframe.src = currentFileUrl;
+        previewBox.appendChild(iframe);
+        return;
+      }
+
+      if (fileType.startsWith("image/")) {
+        const image = document.createElement("img");
+        image.src = currentFileUrl;
+        image.alt = file.name;
+        previewBox.appendChild(image);
+        return;
+      }
+
+      if (isTextFile(fileExtension, fileType)) {
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+          const pre = document.createElement("pre");
+          pre.textContent = event.target.result;
+          previewBox.appendChild(pre);
         };
 
-        editingIndex = null;
-        mainBtn.textContent = "Add Note";
-        cancelBtn.style.display = "none";
+        reader.readAsText(file);
+        return;
       }
 
-      saveNotes();
-      renderNotes();
+      const unsupportedBox = document.createElement("div");
+      unsupportedBox.className = "unsupported";
 
-      titleInput.value = "";
-      textInput.value = "";
+      unsupportedBox.innerHTML = `
+        <h3>Preview Not Available</h3>
+        <p>This file type may not preview directly in the browser.</p>
+        <p>You can still use the Open or Download button above.</p>
+        <p><strong>Supported previews:</strong> PDF, images, text, HTML, CSS, JavaScript, JSON, and Markdown.</p>
+      `;
+
+      previewBox.appendChild(unsupportedBox);
     }
 
-    function editNote(index) {
-      titleInput.value = notes[index].title;
-      textInput.value = notes[index].text;
-
-      editingIndex = index;
-      mainBtn.textContent = "Update Note";
-      cancelBtn.style.display = "block";
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+    function getFileExtension(fileName) {
+      return fileName.split(".").pop().toLowerCase();
     }
 
-    function cancelEdit() {
-      editingIndex = null;
+    function isTextFile(extension, type) {
+      const textExtensions = [
+        "txt",
+        "md",
+        "html",
+        "css",
+        "js",
+        "json",
+        "xml",
+        "csv"
+      ];
 
-      titleInput.value = "";
-      textInput.value = "";
-
-      mainBtn.textContent = "Add Note";
-      cancelBtn.style.display = "none";
+      return type.startsWith("text/") || textExtensions.includes(extension);
     }
 
-    function deleteNote(index) {
-      notes.splice(index, 1);
-
-      if (editingIndex === index) {
-        cancelEdit();
+    function formatFileSize(bytes) {
+      if (bytes < 1024) {
+        return bytes + " bytes";
       }
 
-      saveNotes();
-      renderNotes();
+      if (bytes < 1024 * 1024) {
+        return (bytes / 1024).toFixed(2) + " KB";
+      }
+
+      return (bytes / (1024 * 1024)).toFixed(2) + " MB";
     }
 
-    renderNotes();
+    function clearFile() {
+      fileInput.value = "";
+      fileInfo.style.display = "none";
+      previewBox.innerHTML = '<p class="empty-preview">No document selected yet.</p>';
+
+      if (currentFileUrl) {
+        URL.revokeObjectURL(currentFileUrl);
+      }
+
+      currentFileUrl = null;
+      currentFile = null;
+    }
   </script>
 </body>
 </html>
