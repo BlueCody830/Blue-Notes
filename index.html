@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blue Notes Manager</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #071f3d, #0f4c81);
+      color: white;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: #d9f1ff;
+    }
+
+    header p {
+      color: #b7ddf5;
+    }
+
+    .note-box {
+      background: rgba(255, 255, 255, 0.12);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+      margin-bottom: 30px;
+    }
+
+    .note-box input,
+    .note-box textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    .note-box textarea {
+      resize: none;
+      height: 120px;
+    }
+
+    button {
+      border: none;
+      padding: 12px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .add-btn {
+      background: #38bdf8;
+      color: #04243d;
+      width: 100%;
+      font-size: 1rem;
+    }
+
+    .add-btn:hover {
+      background: #7dd3fc;
+    }
+
+    .dashboard-title {
+      margin-bottom: 15px;
+      color: #d9f1ff;
+    }
+
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 18px;
+    }
+
+    .note-card {
+      background: #e0f2fe;
+      color: #082f49;
+      padding: 18px;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+      position: relative;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .note-card h3 {
+      margin-bottom: 10px;
+      color: #075985;
+    }
+
+    .note-card p {
+      line-height: 1.5;
+      margin-bottom: 15px;
+      white-space: pre-wrap;
+    }
+
+    .delete-btn {
+      background: #ef4444;
+      color: white;
+      font-size: 0.9rem;
+    }
+
+    .delete-btn:hover {
+      background: #dc2626;
+    }
+
+    .empty-message {
+      text-align: center;
+      color: #b7ddf5;
+      margin-top: 20px;
+      font-style: italic;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #b7ddf5;
+      font-size: 0.9rem;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>Blue Notes Manager</h1>
+      <p>Add, save, and remove your notes from the dashboard.</p>
+    </header>
+
+    <section class="note-box">
+      <input type="text" id="noteTitle" placeholder="Note title..." />
+      <textarea id="noteText" placeholder="Write your note here..."></textarea>
+      <button class="add-btn" onclick="addNote()">Add Note</button>
+    </section>
+
+    <h2 class="dashboard-title">Notes Dashboard</h2>
+
+    <section class="notes-grid" id="notesDashboard"></section>
+
+    <p class="empty-message" id="emptyMessage">No notes yet. Add your first note above.</p>
+
+    <footer>
+      <p>Made with HTML, CSS and JavaScript</p>
+    </footer>
+  </div>
+
+  <script>
+    const titleInput = document.getElementById("noteTitle");
+    const textInput = document.getElementById("noteText");
+    const notesDashboard = document.getElementById("notesDashboard");
+    const emptyMessage = document.getElementById("emptyMessage");
+
+    let notes = JSON.parse(localStorage.getItem("notes")) || [];
+
+    function saveNotes() {
+      localStorage.setItem("notes", JSON.stringify(notes));
+    }
+
+    function renderNotes() {
+      notesDashboard.innerHTML = "";
+
+      if (notes.length === 0) {
+        emptyMessage.style.display = "block";
+      } else {
+        emptyMessage.style.display = "none";
+      }
+
+      notes.forEach((note, index) => {
+        const noteCard = document.createElement("div");
+        noteCard.className = "note-card";
+
+        noteCard.innerHTML = `
+          <h3>${note.title}</h3>
+          <p>${note.text}</p>
+          <button class="delete-btn" onclick="deleteNote(${index})">Remove</button>
+        `;
+
+        notesDashboard.appendChild(noteCard);
+      });
+    }
+
+    function addNote() {
+      const title = titleInput.value.trim();
+      const text = textInput.value.trim();
+
+      if (title === "" || text === "") {
+        alert("Please write a title and a note.");
+        return;
+      }
+
+      notes.push({
+        title: title,
+        text: text
+      });
+
+      saveNotes();
+      renderNotes();
+
+      titleInput.value = "";
+      textInput.value = "";
+    }
+
+    function deleteNote(index) {
+      notes.splice(index, 1);
+      saveNotes();
+      renderNotes();
+    }
+
+    renderNotes();
+  </script>
+</body>
+</html>
