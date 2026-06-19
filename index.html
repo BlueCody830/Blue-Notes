@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blue Docs Opener</title>
+  <title>Blue Notes Manager</title>
 
   <style>
     * {
@@ -21,7 +21,7 @@
     }
 
     .container {
-      max-width: 1000px;
+      max-width: 900px;
       margin: auto;
     }
 
@@ -38,175 +38,153 @@
 
     header p {
       color: #b7ddf5;
-      line-height: 1.5;
     }
 
-    .upload-box {
+    .note-box {
       background: rgba(255, 255, 255, 0.12);
-      padding: 25px;
+      padding: 20px;
       border-radius: 15px;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-      margin-bottom: 25px;
-      text-align: center;
+      margin-bottom: 30px;
     }
 
-    .file-label {
-      display: block;
-      background: #38bdf8;
-      color: #04243d;
-      padding: 14px 18px;
+    .note-box input,
+    .note-box textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: none;
       border-radius: 10px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-bottom: 15px;
-      transition: 0.2s;
+      outline: none;
+      font-size: 1rem;
     }
 
-    .file-label:hover {
-      background: #7dd3fc;
+    .note-box textarea {
+      resize: none;
+      height: 120px;
     }
 
-    input[type="file"] {
-      display: none;
-    }
-
-    .file-info {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 15px;
-      border-radius: 12px;
-      margin-top: 15px;
-      text-align: left;
-      color: #d9f1ff;
-      display: none;
-    }
-
-    .file-info p {
-      margin-bottom: 6px;
-      word-break: break-word;
-    }
-
-    .buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: 15px;
-      flex-wrap: wrap;
-    }
-
-    button,
-    .download-link {
+    button {
       border: none;
       padding: 12px 18px;
       border-radius: 10px;
       cursor: pointer;
       font-weight: bold;
       transition: 0.2s;
-      text-decoration: none;
-      text-align: center;
-      flex: 1;
-      min-width: 140px;
     }
 
-    .open-btn {
-      background: #0ea5e9;
-      color: white;
+    .voice-btn {
+      background: #bae6fd;
+      color: #04243d;
+      width: 100%;
+      font-size: 1rem;
+      margin-bottom: 10px;
     }
 
-    .open-btn:hover {
-      background: #0284c7;
+    .voice-btn:hover {
+      background: #e0f2fe;
     }
 
-    .download-link {
+    .voice-btn.listening {
       background: #22c55e;
       color: white;
     }
 
-    .download-link:hover {
-      background: #16a34a;
+    .voice-status {
+      text-align: center;
+      color: #d9f1ff;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      min-height: 20px;
     }
 
-    .clear-btn {
-      background: #ef4444;
+    .add-btn {
+      background: #38bdf8;
+      color: #04243d;
+      width: 100%;
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .add-btn:hover {
+      background: #7dd3fc;
+    }
+
+    .cancel-btn {
+      background: #64748b;
       color: white;
+      width: 100%;
+      font-size: 1rem;
+      display: none;
     }
 
-    .clear-btn:hover {
-      background: #dc2626;
+    .cancel-btn:hover {
+      background: #475569;
     }
 
-    .preview-title {
+    .dashboard-title {
       margin-bottom: 15px;
       color: #d9f1ff;
     }
 
-    .preview-box {
-      background: rgba(255, 255, 255, 0.12);
-      border-radius: 15px;
-      padding: 20px;
-      min-height: 350px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-      overflow: hidden;
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 18px;
     }
 
-    .empty-preview {
-      text-align: center;
-      color: #b7ddf5;
-      font-style: italic;
-      margin-top: 120px;
-    }
-
-    iframe,
-    video,
-    audio {
-      width: 100%;
-      border: none;
-      border-radius: 10px;
-      background: white;
-    }
-
-    iframe {
-      height: 650px;
-    }
-
-    video {
-      max-height: 650px;
-      background: black;
-    }
-
-    audio {
-      margin-top: 20px;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-      margin: auto;
-      border-radius: 10px;
-    }
-
-    pre {
+    .note-card {
       background: #e0f2fe;
       color: #082f49;
       padding: 18px;
-      border-radius: 10px;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      max-height: 650px;
-      overflow: auto;
-      line-height: 1.5;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 0.3s ease;
     }
 
-    .unsupported {
-      background: #e0f2fe;
-      color: #082f49;
-      padding: 25px;
-      border-radius: 12px;
-      text-align: center;
-      line-height: 1.6;
-    }
-
-    .unsupported h3 {
+    .note-card h3 {
       margin-bottom: 10px;
       color: #075985;
+    }
+
+    .note-card p {
+      line-height: 1.5;
+      margin-bottom: 15px;
+      white-space: pre-wrap;
+    }
+
+    .card-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .edit-btn {
+      background: #0ea5e9;
+      color: white;
+      font-size: 0.9rem;
+      flex: 1;
+    }
+
+    .edit-btn:hover {
+      background: #0284c7;
+    }
+
+    .delete-btn {
+      background: #ef4444;
+      color: white;
+      font-size: 0.9rem;
+      flex: 1;
+    }
+
+    .delete-btn:hover {
+      background: #dc2626;
+    }
+
+    .empty-message {
+      text-align: center;
+      color: #b7ddf5;
+      margin-top: 20px;
+      font-style: italic;
     }
 
     footer {
@@ -216,16 +194,23 @@
       font-size: 0.9rem;
     }
 
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     @media (max-width: 600px) {
       header h1 {
         font-size: 2rem;
       }
 
-      iframe {
-        height: 500px;
-      }
-
-      .buttons {
+      .card-buttons {
         flex-direction: column;
       }
     }
@@ -235,33 +220,26 @@
 <body>
   <div class="container">
     <header>
-      <h1>Blue Docs Opener</h1>
-      <p>Open any document from your device. Preview supported files directly in your browser.</p>
+      <h1>Blue Notes Manager</h1>
+      <p>Add, save, edit, remove, and create notes using your voice.</p>
     </header>
 
-    <section class="upload-box">
-      <label for="fileInput" class="file-label">Choose Any Document</label>
+    <section class="note-box">
+      <input type="text" id="noteTitle" placeholder="Note title..." />
+      <textarea id="noteText" placeholder="Write your note here..."></textarea>
 
-      <input type="file" id="fileInput" />
+      <button class="voice-btn" id="voiceBtn" onclick="startVoiceNote()">🎤 Start Voice Note</button>
+      <p class="voice-status" id="voiceStatus"></p>
 
-      <div class="file-info" id="fileInfo">
-        <p><strong>File name:</strong> <span id="fileName"></span></p>
-        <p><strong>File type:</strong> <span id="fileType"></span></p>
-        <p><strong>File size:</strong> <span id="fileSize"></span></p>
-
-        <div class="buttons">
-          <button class="open-btn" id="openBtn">Open File</button>
-          <a class="download-link" id="downloadBtn" download>Download File</a>
-          <button class="clear-btn" onclick="clearFile()">Clear</button>
-        </div>
-      </div>
+      <button class="add-btn" id="mainBtn" onclick="addOrUpdateNote()">Add Note</button>
+      <button class="cancel-btn" id="cancelBtn" onclick="cancelEdit()">Cancel Edit</button>
     </section>
 
-    <h2 class="preview-title">Document Preview</h2>
+    <h2 class="dashboard-title">Notes Dashboard</h2>
 
-    <section class="preview-box" id="previewBox">
-      <p class="empty-preview">No document selected yet.</p>
-    </section>
+    <section class="notes-grid" id="notesDashboard"></section>
+
+    <p class="empty-message" id="emptyMessage">No notes yet. Add your first note above.</p>
 
     <footer>
       <p>Made with HTML, CSS and JavaScript</p>
@@ -269,187 +247,187 @@
   </div>
 
   <script>
-    const fileInput = document.getElementById("fileInput");
-    const fileInfo = document.getElementById("fileInfo");
-    const fileName = document.getElementById("fileName");
-    const fileType = document.getElementById("fileType");
-    const fileSize = document.getElementById("fileSize");
-    const previewBox = document.getElementById("previewBox");
-    const openBtn = document.getElementById("openBtn");
-    const downloadBtn = document.getElementById("downloadBtn");
+    const titleInput = document.getElementById("noteTitle");
+    const textInput = document.getElementById("noteText");
+    const notesDashboard = document.getElementById("notesDashboard");
+    const emptyMessage = document.getElementById("emptyMessage");
+    const mainBtn = document.getElementById("mainBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const voiceBtn = document.getElementById("voiceBtn");
+    const voiceStatus = document.getElementById("voiceStatus");
 
-    let currentFileUrl = null;
+    let notes = JSON.parse(localStorage.getItem("notes")) || [];
+    let editingIndex = null;
 
-    fileInput.addEventListener("change", function () {
-      const file = fileInput.files[0];
+    function saveNotes() {
+      localStorage.setItem("notes", JSON.stringify(notes));
+    }
 
-      if (!file) {
-        return;
+    function renderNotes() {
+      notesDashboard.innerHTML = "";
+
+      if (notes.length === 0) {
+        emptyMessage.style.display = "block";
+      } else {
+        emptyMessage.style.display = "none";
       }
 
-      if (currentFileUrl) {
-        URL.revokeObjectURL(currentFileUrl);
-      }
+      notes.forEach((note, index) => {
+        const noteCard = document.createElement("div");
+        noteCard.className = "note-card";
 
-      currentFileUrl = URL.createObjectURL(file);
+        const noteTitle = document.createElement("h3");
+        noteTitle.textContent = note.title;
 
-      fileInfo.style.display = "block";
-      fileName.textContent = file.name;
-      fileType.textContent = file.type || "Unknown type";
-      fileSize.textContent = formatFileSize(file.size);
+        const noteText = document.createElement("p");
+        noteText.textContent = note.text;
 
-      openBtn.onclick = function () {
-        window.open(currentFileUrl, "_blank");
-      };
+        const buttonsBox = document.createElement("div");
+        buttonsBox.className = "card-buttons";
 
-      downloadBtn.href = currentFileUrl;
-      downloadBtn.download = file.name;
-
-      previewFile(file);
-    });
-
-    function previewFile(file) {
-      previewBox.innerHTML = "";
-
-      const extension = getFileExtension(file.name);
-      const type = file.type;
-
-      if (type === "application/pdf" || extension === "pdf") {
-        const iframe = document.createElement("iframe");
-        iframe.src = currentFileUrl;
-        previewBox.appendChild(iframe);
-        return;
-      }
-
-      if (type.startsWith("image/")) {
-        const image = document.createElement("img");
-        image.src = currentFileUrl;
-        image.alt = file.name;
-        previewBox.appendChild(image);
-        return;
-      }
-
-      if (type.startsWith("video/")) {
-        const video = document.createElement("video");
-        video.src = currentFileUrl;
-        video.controls = true;
-        previewBox.appendChild(video);
-        return;
-      }
-
-      if (type.startsWith("audio/")) {
-        const audio = document.createElement("audio");
-        audio.src = currentFileUrl;
-        audio.controls = true;
-        previewBox.appendChild(audio);
-        return;
-      }
-
-      if (isTextFile(extension, type)) {
-        const reader = new FileReader();
-
-        reader.onload = function (event) {
-          const pre = document.createElement("pre");
-          pre.textContent = event.target.result;
-          previewBox.appendChild(pre);
+        const editBtn = document.createElement("button");
+        editBtn.className = "edit-btn";
+        editBtn.textContent = "Edit";
+        editBtn.onclick = function () {
+          editNote(index);
         };
 
-        reader.readAsText(file);
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "delete-btn";
+        deleteBtn.textContent = "Remove";
+        deleteBtn.onclick = function () {
+          deleteNote(index);
+        };
+
+        buttonsBox.appendChild(editBtn);
+        buttonsBox.appendChild(deleteBtn);
+
+        noteCard.appendChild(noteTitle);
+        noteCard.appendChild(noteText);
+        noteCard.appendChild(buttonsBox);
+
+        notesDashboard.appendChild(noteCard);
+      });
+    }
+
+    function addOrUpdateNote() {
+      const title = titleInput.value.trim();
+      const text = textInput.value.trim();
+
+      if (title === "" || text === "") {
+        alert("Please write a title and a note.");
         return;
       }
 
-      showUnsupportedMessage(file);
-    }
+      if (editingIndex === null) {
+        notes.push({
+          title: title,
+          text: text
+        });
+      } else {
+        notes[editingIndex] = {
+          title: title,
+          text: text
+        };
 
-    function showUnsupportedMessage(file) {
-      const unsupportedBox = document.createElement("div");
-      unsupportedBox.className = "unsupported";
-
-      unsupportedBox.innerHTML = `
-        <h3>File Ready to Open</h3>
-        <p>This file was loaded successfully.</p>
-        <p>Your browser may not be able to preview this type of document inside the page.</p>
-        <p>Use <strong>Open File</strong> or <strong>Download File</strong> above.</p>
-        <br>
-        <p><strong>Selected file:</strong> ${escapeHTML(file.name)}</p>
-        <p><strong>File extension:</strong> .${escapeHTML(getFileExtension(file.name))}</p>
-      `;
-
-      previewBox.appendChild(unsupportedBox);
-    }
-
-    function getFileExtension(name) {
-      if (!name.includes(".")) {
-        return "unknown";
+        editingIndex = null;
+        mainBtn.textContent = "Add Note";
+        cancelBtn.style.display = "none";
       }
 
-      return name.split(".").pop().toLowerCase();
+      saveNotes();
+      renderNotes();
+
+      titleInput.value = "";
+      textInput.value = "";
     }
 
-    function isTextFile(extension, type) {
-      const textExtensions = [
-        "txt",
-        "md",
-        "html",
-        "htm",
-        "css",
-        "js",
-        "json",
-        "xml",
-        "csv",
-        "log",
-        "py",
-        "java",
-        "cpp",
-        "c",
-        "cs",
-        "php",
-        "rb",
-        "sql",
-        "ts",
-        "jsx",
-        "tsx"
-      ];
+    function editNote(index) {
+      titleInput.value = notes[index].title;
+      textInput.value = notes[index].text;
 
-      return type.startsWith("text/") || textExtensions.includes(extension);
+      editingIndex = index;
+      mainBtn.textContent = "Update Note";
+      cancelBtn.style.display = "block";
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
     }
 
-    function formatFileSize(bytes) {
-      if (bytes < 1024) {
-        return bytes + " bytes";
+    function cancelEdit() {
+      editingIndex = null;
+
+      titleInput.value = "";
+      textInput.value = "";
+
+      mainBtn.textContent = "Add Note";
+      cancelBtn.style.display = "none";
+    }
+
+    function deleteNote(index) {
+      notes.splice(index, 1);
+
+      if (editingIndex === index) {
+        cancelEdit();
+      } else if (editingIndex !== null && editingIndex > index) {
+        editingIndex--;
       }
 
-      if (bytes < 1024 * 1024) {
-        return (bytes / 1024).toFixed(2) + " KB";
-      }
-
-      if (bytes < 1024 * 1024 * 1024) {
-        return (bytes / (1024 * 1024)).toFixed(2) + " MB";
-      }
-
-      return (bytes / (1024 * 1024 * 1024)).toFixed(2) + " GB";
+      saveNotes();
+      renderNotes();
     }
 
-    function escapeHTML(text) {
-      return text
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition;
+
+    if (SpeechRecognition) {
+      recognition = new SpeechRecognition();
+
+      recognition.lang = "en-US";
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      recognition.onstart = function () {
+        voiceStatus.textContent = "Listening... speak now.";
+        voiceBtn.textContent = "🎙️ Listening...";
+        voiceBtn.classList.add("listening");
+      };
+
+      recognition.onresult = function (event) {
+        const spokenText = event.results[0][0].transcript;
+
+        if (textInput.value.trim() === "") {
+          textInput.value = spokenText;
+        } else {
+          textInput.value += " " + spokenText;
+        }
+
+        voiceStatus.textContent = "Voice added to your note.";
+      };
+
+      recognition.onerror = function () {
+        voiceStatus.textContent = "Voice input failed. Please try again.";
+      };
+
+      recognition.onend = function () {
+        voiceBtn.textContent = "🎤 Start Voice Note";
+        voiceBtn.classList.remove("listening");
+      };
+    } else {
+      voiceBtn.disabled = true;
+      voiceBtn.textContent = "Voice Not Supported";
+      voiceStatus.textContent = "Your browser does not support voice notes.";
     }
 
-    function clearFile() {
-      fileInput.value = "";
-      fileInfo.style.display = "none";
-      previewBox.innerHTML = '<p class="empty-preview">No document selected yet.</p>';
-
-      if (currentFileUrl) {
-        URL.revokeObjectURL(currentFileUrl);
+    function startVoiceNote() {
+      if (recognition) {
+        recognition.start();
       }
-
-      currentFileUrl = null;
     }
+
+    renderNotes();
   </script>
 </body>
 </html>
