@@ -73,53 +73,15 @@
       transition: 0.2s;
     }
 
-    .voice-btn {
-      background: #bae6fd;
-      color: #04243d;
-      width: 100%;
-      font-size: 1rem;
-      margin-bottom: 10px;
-    }
-
-    .voice-btn:hover {
-      background: #e0f2fe;
-    }
-
-    .voice-btn.listening {
-      background: #22c55e;
-      color: white;
-    }
-
-    .voice-status {
-      text-align: center;
-      color: #d9f1ff;
-      margin-bottom: 10px;
-      font-size: 0.9rem;
-      min-height: 20px;
-    }
-
     .add-btn {
       background: #38bdf8;
       color: #04243d;
       width: 100%;
       font-size: 1rem;
-      margin-bottom: 10px;
     }
 
     .add-btn:hover {
       background: #7dd3fc;
-    }
-
-    .cancel-btn {
-      background: #64748b;
-      color: white;
-      width: 100%;
-      font-size: 1rem;
-      display: none;
-    }
-
-    .cancel-btn:hover {
-      background: #475569;
     }
 
     .dashboard-title {
@@ -139,6 +101,7 @@
       padding: 18px;
       border-radius: 15px;
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+      position: relative;
       animation: fadeIn 0.3s ease;
     }
 
@@ -153,27 +116,10 @@
       white-space: pre-wrap;
     }
 
-    .card-buttons {
-      display: flex;
-      gap: 10px;
-    }
-
-    .edit-btn {
-      background: #0ea5e9;
-      color: white;
-      font-size: 0.9rem;
-      flex: 1;
-    }
-
-    .edit-btn:hover {
-      background: #0284c7;
-    }
-
     .delete-btn {
       background: #ef4444;
       color: white;
       font-size: 0.9rem;
-      flex: 1;
     }
 
     .delete-btn:hover {
@@ -209,10 +155,6 @@
       header h1 {
         font-size: 2rem;
       }
-
-      .card-buttons {
-        flex-direction: column;
-      }
     }
   </style>
 </head>
@@ -221,18 +163,13 @@
   <div class="container">
     <header>
       <h1>Blue Notes Manager</h1>
-      <p>Add, save, edit, remove, and create notes using your voice.</p>
+      <p>Add, save, and remove your notes from the dashboard.</p>
     </header>
 
     <section class="note-box">
       <input type="text" id="noteTitle" placeholder="Note title..." />
       <textarea id="noteText" placeholder="Write your note here..."></textarea>
-
-      <button class="voice-btn" id="voiceBtn" onclick="startVoiceNote()">🎤 Start Voice Note</button>
-      <p class="voice-status" id="voiceStatus"></p>
-
-      <button class="add-btn" id="mainBtn" onclick="addOrUpdateNote()">Add Note</button>
-      <button class="cancel-btn" id="cancelBtn" onclick="cancelEdit()">Cancel Edit</button>
+      <button class="add-btn" onclick="addNote()">Add Note</button>
     </section>
 
     <h2 class="dashboard-title">Notes Dashboard</h2>
@@ -251,13 +188,8 @@
     const textInput = document.getElementById("noteText");
     const notesDashboard = document.getElementById("notesDashboard");
     const emptyMessage = document.getElementById("emptyMessage");
-    const mainBtn = document.getElementById("mainBtn");
-    const cancelBtn = document.getElementById("cancelBtn");
-    const voiceBtn = document.getElementById("voiceBtn");
-    const voiceStatus = document.getElementById("voiceStatus");
 
     let notes = JSON.parse(localStorage.getItem("notes")) || [];
-    let editingIndex = null;
 
     function saveNotes() {
       localStorage.setItem("notes", JSON.stringify(notes));
@@ -276,41 +208,17 @@
         const noteCard = document.createElement("div");
         noteCard.className = "note-card";
 
-        const noteTitle = document.createElement("h3");
-        noteTitle.textContent = note.title;
-
-        const noteText = document.createElement("p");
-        noteText.textContent = note.text;
-
-        const buttonsBox = document.createElement("div");
-        buttonsBox.className = "card-buttons";
-
-        const editBtn = document.createElement("button");
-        editBtn.className = "edit-btn";
-        editBtn.textContent = "Edit";
-        editBtn.onclick = function () {
-          editNote(index);
-        };
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.className = "delete-btn";
-        deleteBtn.textContent = "Remove";
-        deleteBtn.onclick = function () {
-          deleteNote(index);
-        };
-
-        buttonsBox.appendChild(editBtn);
-        buttonsBox.appendChild(deleteBtn);
-
-        noteCard.appendChild(noteTitle);
-        noteCard.appendChild(noteText);
-        noteCard.appendChild(buttonsBox);
+        noteCard.innerHTML = `
+          <h3>${note.title}</h3>
+          <p>${note.text}</p>
+          <button class="delete-btn" onclick="deleteNote(${index})">Remove</button>
+        `;
 
         notesDashboard.appendChild(noteCard);
       });
     }
 
-    function addOrUpdateNote() {
+    function addNote() {
       const title = titleInput.value.trim();
       const text = textInput.value.trim();
 
@@ -319,112 +227,22 @@
         return;
       }
 
-      if (editingIndex === null) {
-        notes.push({
-          title: title,
-          text: text
-        });
-      } else {
-        notes[editingIndex] = {
-          title: title,
-          text: text
-        };
-
-        editingIndex = null;
-        mainBtn.textContent = "Add Note";
-        cancelBtn.style.display = "none";
-      }
+      notes.push({
+        title: title,
+        text: text
+      });
 
       saveNotes();
       renderNotes();
 
       titleInput.value = "";
       textInput.value = "";
-    }
-
-    function editNote(index) {
-      titleInput.value = notes[index].title;
-      textInput.value = notes[index].text;
-
-      editingIndex = index;
-      mainBtn.textContent = "Update Note";
-      cancelBtn.style.display = "block";
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    }
-
-    function cancelEdit() {
-      editingIndex = null;
-
-      titleInput.value = "";
-      textInput.value = "";
-
-      mainBtn.textContent = "Add Note";
-      cancelBtn.style.display = "none";
     }
 
     function deleteNote(index) {
       notes.splice(index, 1);
-
-      if (editingIndex === index) {
-        cancelEdit();
-      } else if (editingIndex !== null && editingIndex > index) {
-        editingIndex--;
-      }
-
       saveNotes();
       renderNotes();
-    }
-
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let recognition;
-
-    if (SpeechRecognition) {
-      recognition = new SpeechRecognition();
-
-      recognition.lang = "en-US";
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      recognition.onstart = function () {
-        voiceStatus.textContent = "Listening... speak now.";
-        voiceBtn.textContent = "🎙️ Listening...";
-        voiceBtn.classList.add("listening");
-      };
-
-      recognition.onresult = function (event) {
-        const spokenText = event.results[0][0].transcript;
-
-        if (textInput.value.trim() === "") {
-          textInput.value = spokenText;
-        } else {
-          textInput.value += " " + spokenText;
-        }
-
-        voiceStatus.textContent = "Voice added to your note.";
-      };
-
-      recognition.onerror = function () {
-        voiceStatus.textContent = "Voice input failed. Please try again.";
-      };
-
-      recognition.onend = function () {
-        voiceBtn.textContent = "🎤 Start Voice Note";
-        voiceBtn.classList.remove("listening");
-      };
-    } else {
-      voiceBtn.disabled = true;
-      voiceBtn.textContent = "Voice Not Supported";
-      voiceStatus.textContent = "Your browser does not support voice notes.";
-    }
-
-    function startVoiceNote() {
-      if (recognition) {
-        recognition.start();
-      }
     }
 
     renderNotes();
