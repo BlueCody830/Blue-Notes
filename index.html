@@ -73,31 +73,6 @@
       transition: 0.2s;
     }
 
-    .voice-btn {
-      background: #bae6fd;
-      color: #04243d;
-      width: 100%;
-      font-size: 1rem;
-      margin-bottom: 10px;
-    }
-
-    .voice-btn:hover {
-      background: #e0f2fe;
-    }
-
-    .voice-btn.listening {
-      background: #22c55e;
-      color: white;
-    }
-
-    .voice-status {
-      text-align: center;
-      color: #d9f1ff;
-      margin-bottom: 10px;
-      font-size: 0.9rem;
-      min-height: 20px;
-    }
-
     .add-btn {
       background: #38bdf8;
       color: #04243d;
@@ -221,15 +196,12 @@
   <div class="container">
     <header>
       <h1>Blue Notes Manager</h1>
-      <p>Add, save, edit, remove, and create notes using your voice.</p>
+      <p>Add, save, edit, and remove your notes from the dashboard.</p>
     </header>
 
     <section class="note-box">
       <input type="text" id="noteTitle" placeholder="Note title..." />
       <textarea id="noteText" placeholder="Write your note here..."></textarea>
-
-      <button class="voice-btn" id="voiceBtn" onclick="startVoiceNote()">🎤 Start Voice Note</button>
-      <p class="voice-status" id="voiceStatus"></p>
 
       <button class="add-btn" id="mainBtn" onclick="addOrUpdateNote()">Add Note</button>
       <button class="cancel-btn" id="cancelBtn" onclick="cancelEdit()">Cancel Edit</button>
@@ -253,8 +225,6 @@
     const emptyMessage = document.getElementById("emptyMessage");
     const mainBtn = document.getElementById("mainBtn");
     const cancelBtn = document.getElementById("cancelBtn");
-    const voiceBtn = document.getElementById("voiceBtn");
-    const voiceStatus = document.getElementById("voiceStatus");
 
     let notes = JSON.parse(localStorage.getItem("notes")) || [];
     let editingIndex = null;
@@ -371,60 +341,10 @@
 
       if (editingIndex === index) {
         cancelEdit();
-      } else if (editingIndex !== null && editingIndex > index) {
-        editingIndex--;
       }
 
       saveNotes();
       renderNotes();
-    }
-
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let recognition;
-
-    if (SpeechRecognition) {
-      recognition = new SpeechRecognition();
-
-      recognition.lang = "en-US";
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      recognition.onstart = function () {
-        voiceStatus.textContent = "Listening... speak now.";
-        voiceBtn.textContent = "🎙️ Listening...";
-        voiceBtn.classList.add("listening");
-      };
-
-      recognition.onresult = function (event) {
-        const spokenText = event.results[0][0].transcript;
-
-        if (textInput.value.trim() === "") {
-          textInput.value = spokenText;
-        } else {
-          textInput.value += " " + spokenText;
-        }
-
-        voiceStatus.textContent = "Voice added to your note.";
-      };
-
-      recognition.onerror = function () {
-        voiceStatus.textContent = "Voice input failed. Please try again.";
-      };
-
-      recognition.onend = function () {
-        voiceBtn.textContent = "🎤 Start Voice Note";
-        voiceBtn.classList.remove("listening");
-      };
-    } else {
-      voiceBtn.disabled = true;
-      voiceBtn.textContent = "Voice Not Supported";
-      voiceStatus.textContent = "Your browser does not support voice notes.";
-    }
-
-    function startVoiceNote() {
-      if (recognition) {
-        recognition.start();
-      }
     }
 
     renderNotes();
