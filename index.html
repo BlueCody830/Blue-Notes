@@ -41,11 +41,22 @@
       line-height: 1.5;
     }
 
+    .storage-info {
+      margin-top: 12px;
+      color: #bae6fd;
+      font-size: 0.9rem;
+    }
+
+    .note-box,
+    .note-card,
+    .modal-card {
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+    }
+
     .note-box {
       background: rgba(255, 255, 255, 0.12);
       padding: 20px;
       border-radius: 15px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
       margin-bottom: 30px;
     }
 
@@ -75,6 +86,11 @@
       transition: 0.2s;
       text-align: center;
       font-size: 0.95rem;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
     }
 
     .tools {
@@ -116,11 +132,6 @@
       background: #dc2626;
     }
 
-    .stop-btn:disabled {
-      background: #94a3b8;
-      cursor: not-allowed;
-    }
-
     .save-btn {
       background: #38bdf8;
       color: #04243d;
@@ -148,69 +159,92 @@
     .status {
       color: #d9f1ff;
       text-align: center;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       min-height: 22px;
       font-size: 0.9rem;
     }
 
-    .preview-title {
+    .attachments-title {
+      margin: 12px 0 10px;
       color: #d9f1ff;
-      margin-bottom: 10px;
       font-size: 1rem;
     }
 
-    .attachment-preview,
-    .note-media {
+    .attachment-list {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
+      gap: 10px;
       margin-bottom: 15px;
     }
 
-    .preview-item,
-    .media-item {
-      background: rgba(255, 255, 255, 0.15);
-      padding: 10px;
+    .no-attachments {
+      color: #b7ddf5;
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+
+    .attachment-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 12px;
       border-radius: 12px;
+    }
+
+    .attachment-icon {
+      font-size: 1.45rem;
+    }
+
+    .attachment-details {
+      min-width: 0;
+    }
+
+    .attachment-details strong,
+    .attachment-details span {
+      display: block;
       overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    .preview-item p,
-    .media-item p {
-      font-size: 0.85rem;
-      margin-bottom: 8px;
-      word-break: break-word;
-      color: #d9f1ff;
+    .attachment-details strong {
+      color: #ffffff;
+      margin-bottom: 4px;
     }
 
-    .preview-item img,
-    .media-item img {
-      width: 100%;
-      max-height: 220px;
-      object-fit: cover;
-      border-radius: 10px;
+    .attachment-details span {
+      color: #bae6fd;
+      font-size: 0.82rem;
     }
 
-    .preview-item video,
-    .media-item video {
-      width: 100%;
-      max-height: 240px;
-      border-radius: 10px;
-      background: black;
+    .attachment-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
-    .preview-item audio,
-    .media-item audio {
-      width: 100%;
+    .open-attachment-btn {
+      background: #0ea5e9;
+      color: white;
+      padding: 9px 12px;
+      font-size: 0.82rem;
+    }
+
+    .open-attachment-btn:hover {
+      background: #0284c7;
     }
 
     .remove-media-btn {
       background: #ef4444;
       color: white;
-      width: 100%;
-      padding: 8px;
-      font-size: 0.8rem;
-      margin-top: 8px;
+      padding: 9px 12px;
+      font-size: 0.82rem;
+    }
+
+    .remove-media-btn:hover {
+      background: #dc2626;
     }
 
     .dashboard-title {
@@ -229,19 +263,12 @@
       color: #082f49;
       padding: 18px;
       border-radius: 15px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
       animation: fadeIn 0.3s ease;
     }
 
     .note-card h3 {
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       color: #075985;
-    }
-
-    .note-card .note-text {
-      line-height: 1.5;
-      margin-bottom: 15px;
-      white-space: pre-wrap;
     }
 
     .note-card small {
@@ -250,18 +277,27 @@
       margin-bottom: 12px;
     }
 
-    .note-card .media-item {
-      background: #bae6fd;
+    .note-text {
+      white-space: pre-wrap;
+      line-height: 1.5;
+      margin-bottom: 14px;
     }
 
-    .note-card .media-item p {
-      color: #082f49;
+    .note-media-btn {
+      background: #bae6fd;
+      color: #075985;
+      width: 100%;
+      margin-bottom: 14px;
+    }
+
+    .note-media-btn:hover {
+      background: #7dd3fc;
     }
 
     .card-buttons {
       display: flex;
       gap: 10px;
-      margin-top: 15px;
+      margin-top: 10px;
     }
 
     .edit-btn {
@@ -291,6 +327,101 @@
       font-style: italic;
     }
 
+    .media-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.82);
+      padding: 14px;
+      display: grid;
+      place-items: center;
+    }
+
+    .media-modal[hidden] {
+      display: none;
+    }
+
+    .modal-card {
+      width: min(100%, 950px);
+      max-height: calc(100vh - 28px);
+      overflow: hidden;
+      background: #061d35;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .modal-header h2 {
+      color: #d9f1ff;
+      font-size: 1.1rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .modal-header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .modal-back {
+      background: #0ea5e9;
+      color: white;
+      padding: 8px 11px;
+      font-size: 0.82rem;
+    }
+
+    .modal-close {
+      background: #ef4444;
+      color: white;
+      padding: 8px 11px;
+      font-size: 0.82rem;
+    }
+
+    .modal-body {
+      padding: 16px;
+      overflow: auto;
+      min-height: 200px;
+    }
+
+    .modal-body img,
+    .modal-body video {
+      display: block;
+      width: 100%;
+      max-height: 74vh;
+      object-fit: contain;
+      border-radius: 10px;
+      background: black;
+    }
+
+    .modal-body audio {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .modal-file-info {
+      color: #b7ddf5;
+      margin-bottom: 14px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .loading-text,
+    .modal-empty {
+      color: #d9f1ff;
+      text-align: center;
+      padding: 35px 10px;
+    }
+
     footer {
       text-align: center;
       margin-top: 40px;
@@ -310,12 +441,33 @@
     }
 
     @media (max-width: 600px) {
+      body {
+        padding: 14px;
+      }
+
       header h1 {
         font-size: 2rem;
       }
 
+      .attachment-row {
+        grid-template-columns: auto 1fr;
+      }
+
+      .attachment-actions {
+        grid-column: 1 / -1;
+        justify-content: stretch;
+      }
+
+      .attachment-actions button {
+        flex: 1;
+      }
+
       .card-buttons {
         flex-direction: column;
+      }
+
+      .modal-header {
+        align-items: flex-start;
       }
     }
   </style>
@@ -325,7 +477,8 @@
   <div class="container">
     <header>
       <h1>Blue Notes Media Editor</h1>
-      <p>Create notes with text, photos, videos, and recorded voice notes.</p>
+      <p>Create notes with text, photos, videos, and voice recordings.</p>
+      <p class="storage-info" id="storageInfo">Checking local storage...</p>
     </header>
 
     <section class="note-box">
@@ -342,15 +495,14 @@
 
       <p class="status" id="statusText"></p>
 
-      <p class="preview-title">Current Attachments</p>
-      <div class="attachment-preview" id="attachmentPreview"></div>
+      <p class="attachments-title">Attachments</p>
+      <div class="attachment-list" id="attachmentList"></div>
 
       <button class="save-btn" id="saveBtn">Save Note</button>
       <button class="cancel-btn" id="cancelBtn">Cancel Edit</button>
     </section>
 
     <h2 class="dashboard-title">Notes Dashboard</h2>
-
     <section class="notes-grid" id="notesDashboard"></section>
 
     <p class="empty-message" id="emptyMessage">No notes yet. Add your first note above.</p>
@@ -360,74 +512,240 @@
     </footer>
   </div>
 
+  <div class="media-modal" id="mediaModal" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="modalTitle">Attachment</h2>
+
+        <div class="modal-header-actions">
+          <button class="modal-back" id="modalBackBtn" hidden>Back</button>
+          <button class="modal-close" id="modalCloseBtn">Close</button>
+        </div>
+      </div>
+
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
   <script>
+    const DB_NAME = "BlueNotesMediaDB";
+    const DB_VERSION = 2;
+
+    const NOTES_STORE = "notes";
+    const ATTACHMENT_META_STORE = "attachmentMeta";
+    const ATTACHMENT_BLOB_STORE = "attachmentBlobs";
+
     const titleInput = document.getElementById("noteTitle");
     const textInput = document.getElementById("noteText");
     const mediaInput = document.getElementById("mediaInput");
-    const attachmentPreview = document.getElementById("attachmentPreview");
+
+    const attachmentList = document.getElementById("attachmentList");
     const notesDashboard = document.getElementById("notesDashboard");
     const emptyMessage = document.getElementById("emptyMessage");
-    const saveBtn = document.getElementById("saveBtn");
-    const cancelBtn = document.getElementById("cancelBtn");
+
     const recordBtn = document.getElementById("recordBtn");
     const stopBtn = document.getElementById("stopBtn");
-    const statusText = document.getElementById("statusText");
+    const saveBtn = document.getElementById("saveBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
 
-    const DB_NAME = "BlueNotesMediaDB";
-    const STORE_NAME = "notes";
+    const statusText = document.getElementById("statusText");
+    const storageInfo = document.getElementById("storageInfo");
+
+    const mediaModal = document.getElementById("mediaModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalBody = document.getElementById("modalBody");
+    const modalCloseBtn = document.getElementById("modalCloseBtn");
+    const modalBackBtn = document.getElementById("modalBackBtn");
 
     let db;
     let currentAttachments = [];
+    let originalAttachmentIds = [];
+
     let editingId = null;
     let editingCreatedAt = null;
 
     let mediaRecorder;
-    let audioChunks = [];
     let recordingStream;
+    let audioChunks = [];
+
+    let activeObjectUrl = null;
+    let modalBackAction = null;
+    let modalRequestNumber = 0;
+
+    function makeId() {
+      if (window.crypto && crypto.randomUUID) {
+        return crypto.randomUUID();
+      }
+
+      return Date.now().toString(36) + Math.random().toString(36).slice(2);
+    }
+
+    function formatFileSize(bytes) {
+      if (!bytes) {
+        return "0 bytes";
+      }
+
+      if (bytes < 1024) {
+        return bytes + " bytes";
+      }
+
+      if (bytes < 1024 * 1024) {
+        return (bytes / 1024).toFixed(2) + " KB";
+      }
+
+      if (bytes < 1024 * 1024 * 1024) {
+        return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+      }
+
+      return (bytes / (1024 * 1024 * 1024)).toFixed(2) + " GB";
+    }
+
+    function getAttachmentIcon(type) {
+      if (type.startsWith("image/")) {
+        return "🖼️";
+      }
+
+      if (type.startsWith("video/")) {
+        return "🎥";
+      }
+
+      if (type.startsWith("audio/")) {
+        return "🎙️";
+      }
+
+      return "📎";
+    }
+
+    function getAttachmentTypeLabel(type) {
+      if (type.startsWith("image/")) {
+        return "Photo";
+      }
+
+      if (type.startsWith("video/")) {
+        return "Video";
+      }
+
+      if (type.startsWith("audio/")) {
+        return "Voice recording";
+      }
+
+      return "Attachment";
+    }
 
     function openDatabase() {
       return new Promise((resolve, reject) => {
-        const request = indexedDB.open(DB_NAME, 1);
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
 
         request.onupgradeneeded = function (event) {
           const database = event.target.result;
+          const transaction = event.target.transaction;
 
-          if (!database.objectStoreNames.contains(STORE_NAME)) {
-            database.createObjectStore(STORE_NAME, { keyPath: "id" });
+          let notesStore;
+
+          if (!database.objectStoreNames.contains(NOTES_STORE)) {
+            notesStore = database.createObjectStore(NOTES_STORE, {
+              keyPath: "id"
+            });
+          } else {
+            notesStore = transaction.objectStore(NOTES_STORE);
+          }
+
+          let attachmentMetaStore;
+
+          if (!database.objectStoreNames.contains(ATTACHMENT_META_STORE)) {
+            attachmentMetaStore = database.createObjectStore(
+              ATTACHMENT_META_STORE,
+              { keyPath: "id" }
+            );
+          } else {
+            attachmentMetaStore = transaction.objectStore(
+              ATTACHMENT_META_STORE
+            );
+          }
+
+          if (!attachmentMetaStore.indexNames.contains("noteId")) {
+            attachmentMetaStore.createIndex("noteId", "noteId", {
+              unique: false
+            });
+          }
+
+          let attachmentBlobStore;
+
+          if (!database.objectStoreNames.contains(ATTACHMENT_BLOB_STORE)) {
+            attachmentBlobStore = database.createObjectStore(
+              ATTACHMENT_BLOB_STORE,
+              { keyPath: "id" }
+            );
+          } else {
+            attachmentBlobStore = transaction.objectStore(
+              ATTACHMENT_BLOB_STORE
+            );
+          }
+
+          /*
+            Migrates the older version of this app:
+            old notes stored media inside each note.
+            new version stores media separately for faster note loading.
+          */
+          if (event.oldVersion > 0 && event.oldVersion < 2) {
+            const cursorRequest = notesStore.openCursor();
+
+            cursorRequest.onsuccess = function (cursorEvent) {
+              const cursor = cursorEvent.target.result;
+
+              if (!cursor) {
+                return;
+              }
+
+              const oldNote = cursor.value;
+              const oldAttachments = Array.isArray(oldNote.attachments)
+                ? oldNote.attachments
+                : [];
+
+              oldAttachments.forEach((attachment) => {
+                const attachmentId = attachment.id || makeId();
+
+                attachmentMetaStore.put({
+                  id: attachmentId,
+                  noteId: oldNote.id,
+                  name: attachment.name || "Attachment",
+                  type: attachment.type || "application/octet-stream",
+                  size: attachment.size || attachment.blob?.size || 0,
+                  createdAt: oldNote.createdAt || new Date().toISOString()
+                });
+
+                if (attachment.blob) {
+                  attachmentBlobStore.put({
+                    id: attachmentId,
+                    blob: attachment.blob
+                  });
+                }
+              });
+
+              delete oldNote.attachments;
+              oldNote.attachmentCount = oldAttachments.length;
+
+              cursor.update(oldNote);
+              cursor.continue();
+            };
           }
         };
 
         request.onsuccess = function (event) {
           db = event.target.result;
-          resolve(db);
-        };
-
-        request.onerror = function () {
-          reject("Database failed to open.");
-        };
-      });
-    }
-
-    function saveNoteToDatabase(note) {
-      return new Promise((resolve, reject) => {
-        const transaction = db.transaction(STORE_NAME, "readwrite");
-        const store = transaction.objectStore(STORE_NAME);
-        const request = store.put(note);
-
-        request.onsuccess = function () {
           resolve();
         };
 
         request.onerror = function () {
-          reject("Note failed to save.");
+          reject(request.error || new Error("Database could not open."));
         };
       });
     }
 
     function getAllNotes() {
       return new Promise((resolve, reject) => {
-        const transaction = db.transaction(STORE_NAME, "readonly");
-        const store = transaction.objectStore(STORE_NAME);
+        const transaction = db.transaction(NOTES_STORE, "readonly");
+        const store = transaction.objectStore(NOTES_STORE);
         const request = store.getAll();
 
         request.onsuccess = function () {
@@ -435,15 +753,15 @@
         };
 
         request.onerror = function () {
-          reject("Notes failed to load.");
+          reject(request.error);
         };
       });
     }
 
     function getNoteById(id) {
       return new Promise((resolve, reject) => {
-        const transaction = db.transaction(STORE_NAME, "readonly");
-        const store = transaction.objectStore(STORE_NAME);
+        const transaction = db.transaction(NOTES_STORE, "readonly");
+        const store = transaction.objectStore(NOTES_STORE);
         const request = store.get(id);
 
         request.onsuccess = function () {
@@ -451,24 +769,239 @@
         };
 
         request.onerror = function () {
-          reject("Note failed to load.");
+          reject(request.error);
         };
       });
     }
 
-    function deleteNoteFromDatabase(id) {
+    function getAttachmentMetadata(noteId) {
       return new Promise((resolve, reject) => {
-        const transaction = db.transaction(STORE_NAME, "readwrite");
-        const store = transaction.objectStore(STORE_NAME);
-        const request = store.delete(id);
+        const transaction = db.transaction(
+          ATTACHMENT_META_STORE,
+          "readonly"
+        );
+
+        const store = transaction.objectStore(ATTACHMENT_META_STORE);
+        const index = store.index("noteId");
+        const request = index.getAll(noteId);
 
         request.onsuccess = function () {
-          resolve();
+          resolve(request.result);
         };
 
         request.onerror = function () {
-          reject("Note failed to delete.");
+          reject(request.error);
         };
+      });
+    }
+
+    function getAttachmentBlob(id) {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(
+          ATTACHMENT_BLOB_STORE,
+          "readonly"
+        );
+
+        const store = transaction.objectStore(ATTACHMENT_BLOB_STORE);
+        const request = store.get(id);
+
+        request.onsuccess = function () {
+          resolve(request.result ? request.result.blob : null);
+        };
+
+        request.onerror = function () {
+          reject(request.error);
+        };
+      });
+    }
+
+    function saveNoteAndAttachments(note, newAttachments, removedAttachmentIds) {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(
+          [NOTES_STORE, ATTACHMENT_META_STORE, ATTACHMENT_BLOB_STORE],
+          "readwrite"
+        );
+
+        const notesStore = transaction.objectStore(NOTES_STORE);
+        const metadataStore = transaction.objectStore(ATTACHMENT_META_STORE);
+        const blobStore = transaction.objectStore(ATTACHMENT_BLOB_STORE);
+
+        notesStore.put(note);
+
+        newAttachments.forEach((attachment) => {
+          metadataStore.put({
+            id: attachment.id,
+            noteId: note.id,
+            name: attachment.name,
+            type: attachment.type,
+            size: attachment.size,
+            createdAt: attachment.createdAt || new Date().toISOString()
+          });
+
+          blobStore.put({
+            id: attachment.id,
+            blob: attachment.blob
+          });
+        });
+
+        removedAttachmentIds.forEach((id) => {
+          metadataStore.delete(id);
+          blobStore.delete(id);
+        });
+
+        transaction.oncomplete = function () {
+          resolve();
+        };
+
+        transaction.onerror = function () {
+          reject(transaction.error);
+        };
+
+        transaction.onabort = function () {
+          reject(transaction.error);
+        };
+      });
+    }
+
+    async function deleteNoteAndAttachments(noteId) {
+      const attachments = await getAttachmentMetadata(noteId);
+
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(
+          [NOTES_STORE, ATTACHMENT_META_STORE, ATTACHMENT_BLOB_STORE],
+          "readwrite"
+        );
+
+        const notesStore = transaction.objectStore(NOTES_STORE);
+        const metadataStore = transaction.objectStore(ATTACHMENT_META_STORE);
+        const blobStore = transaction.objectStore(ATTACHMENT_BLOB_STORE);
+
+        notesStore.delete(noteId);
+
+        attachments.forEach((attachment) => {
+          metadataStore.delete(attachment.id);
+          blobStore.delete(attachment.id);
+        });
+
+        transaction.oncomplete = function () {
+          resolve();
+        };
+
+        transaction.onerror = function () {
+          reject(transaction.error);
+        };
+      });
+    }
+
+    async function requestPersistentStorage() {
+      if (!navigator.storage || !navigator.storage.persist) {
+        return;
+      }
+
+      try {
+        await navigator.storage.persist();
+      } catch (error) {
+        console.log("Persistent storage request was not available.");
+      }
+    }
+
+    async function updateStorageInfo() {
+      if (!navigator.storage || !navigator.storage.estimate) {
+        storageInfo.textContent = "Saved locally in this browser.";
+        return;
+      }
+
+      try {
+        const estimate = await navigator.storage.estimate();
+        const usage = estimate.usage || 0;
+        const quota = estimate.quota || 0;
+
+        storageInfo.textContent =
+          "Local browser storage: " +
+          formatFileSize(usage) +
+          " used" +
+          (quota ? " of about " + formatFileSize(quota) : "") +
+          ".";
+      } catch (error) {
+        storageInfo.textContent = "Saved locally in this browser.";
+      }
+    }
+
+    function createAttachmentRow(attachment, openAction, removeAction) {
+      const row = document.createElement("div");
+      row.className = "attachment-row";
+
+      const icon = document.createElement("div");
+      icon.className = "attachment-icon";
+      icon.textContent = getAttachmentIcon(attachment.type);
+
+      const details = document.createElement("div");
+      details.className = "attachment-details";
+
+      const fileName = document.createElement("strong");
+      fileName.textContent = attachment.name;
+
+      const fileInfo = document.createElement("span");
+      fileInfo.textContent =
+        getAttachmentTypeLabel(attachment.type) +
+        " • " +
+        formatFileSize(attachment.size);
+
+      details.appendChild(fileName);
+      details.appendChild(fileInfo);
+
+      const actions = document.createElement("div");
+      actions.className = "attachment-actions";
+
+      if (openAction) {
+        const openButton = document.createElement("button");
+        openButton.className = "open-attachment-btn";
+        openButton.textContent = "Open";
+        openButton.onclick = openAction;
+        actions.appendChild(openButton);
+      }
+
+      if (removeAction) {
+        const removeButton = document.createElement("button");
+        removeButton.className = "remove-media-btn";
+        removeButton.textContent = "Remove";
+        removeButton.onclick = removeAction;
+        actions.appendChild(removeButton);
+      }
+
+      row.appendChild(icon);
+      row.appendChild(details);
+      row.appendChild(actions);
+
+      return row;
+    }
+
+    function renderAttachmentList() {
+      attachmentList.innerHTML = "";
+
+      if (currentAttachments.length === 0) {
+        const emptyText = document.createElement("p");
+        emptyText.className = "no-attachments";
+        emptyText.textContent =
+          "No attachments yet. Photos, videos, and recordings will appear here as lightweight file rows.";
+        attachmentList.appendChild(emptyText);
+        return;
+      }
+
+      currentAttachments.forEach((attachment, index) => {
+        const row = createAttachmentRow(
+          attachment,
+          function () {
+            openAttachmentViewer(attachment);
+          },
+          function () {
+            currentAttachments.splice(index, 1);
+            renderAttachmentList();
+            statusText.textContent = "Attachment removed from this note.";
+          }
+        );
+
+        attachmentList.appendChild(row);
       });
     }
 
@@ -476,61 +1009,96 @@
       const files = Array.from(mediaInput.files);
 
       files.forEach((file) => {
+        if (
+          !file.type.startsWith("image/") &&
+          !file.type.startsWith("video/")
+        ) {
+          return;
+        }
+
         currentAttachments.push({
-          id: crypto.randomUUID(),
+          id: makeId(),
           name: file.name,
           type: file.type,
-          blob: file
+          size: file.size,
+          createdAt: new Date().toISOString(),
+          blob: file,
+          isNew: true
         });
       });
 
       mediaInput.value = "";
-      renderAttachmentPreview();
-      statusText.textContent = "Media added to the note.";
+      renderAttachmentList();
+
+      statusText.textContent =
+        files.length > 0
+          ? "Media attached. It will not preview until you press Open."
+          : "";
     });
 
     recordBtn.addEventListener("click", async function () {
       if (!navigator.mediaDevices || !window.MediaRecorder) {
-        statusText.textContent = "Voice recording is not supported in this browser.";
+        statusText.textContent =
+          "Voice recording is not supported in this browser.";
         return;
       }
 
       try {
-        recordingStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        recordingStream = await navigator.mediaDevices.getUserMedia({
+          audio: true
+        });
 
         audioChunks = [];
-        mediaRecorder = new MediaRecorder(recordingStream);
+
+        const preferredMimeType = MediaRecorder.isTypeSupported("audio/webm")
+          ? "audio/webm"
+          : "";
+
+        mediaRecorder = preferredMimeType
+          ? new MediaRecorder(recordingStream, {
+              mimeType: preferredMimeType
+            })
+          : new MediaRecorder(recordingStream);
 
         mediaRecorder.ondataavailable = function (event) {
-          audioChunks.push(event.data);
+          if (event.data.size > 0) {
+            audioChunks.push(event.data);
+          }
         };
 
         mediaRecorder.onstop = function () {
-          const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+          const audioBlob = new Blob(audioChunks, {
+            type: mediaRecorder.mimeType || "audio/webm"
+          });
 
           currentAttachments.push({
-            id: crypto.randomUUID(),
-            name: "Voice Note " + new Date().toLocaleString(),
-            type: "audio/webm",
-            blob: audioBlob
+            id: makeId(),
+            name: "Voice Note - " + new Date().toLocaleString(),
+            type: audioBlob.type || "audio/webm",
+            size: audioBlob.size,
+            createdAt: new Date().toISOString(),
+            blob: audioBlob,
+            isNew: true
           });
 
           recordingStream.getTracks().forEach((track) => track.stop());
 
-          renderAttachmentPreview();
-
-          statusText.textContent = "Voice recording added to the note.";
           recordBtn.disabled = false;
           stopBtn.disabled = true;
+
+          renderAttachmentList();
+          statusText.textContent =
+            "Voice recording attached. Press Open whenever you want to listen.";
         };
 
         mediaRecorder.start();
 
-        statusText.textContent = "Recording... speak now.";
         recordBtn.disabled = true;
         stopBtn.disabled = false;
+        statusText.textContent = "Recording... speak now.";
       } catch (error) {
-        statusText.textContent = "Microphone permission was denied or unavailable.";
+        statusText.textContent =
+          "Microphone permission was denied or unavailable.";
       }
     });
 
@@ -544,28 +1112,61 @@
       const title = titleInput.value.trim() || "Untitled Note";
       const text = textInput.value.trim();
 
-      if (title === "Untitled Note" && text === "" && currentAttachments.length === 0) {
+      if (
+        title === "Untitled Note" &&
+        text === "" &&
+        currentAttachments.length === 0
+      ) {
         alert("Please write something or add media before saving.");
         return;
       }
 
-      const now = new Date().toISOString();
+      saveBtn.disabled = true;
+      statusText.textContent = "Saving note...";
 
-      const note = {
-        id: editingId || crypto.randomUUID(),
-        title: title,
-        text: text,
-        attachments: currentAttachments,
-        createdAt: editingCreatedAt || now,
-        updatedAt: now
-      };
+      try {
+        const noteId = editingId || makeId();
+        const now = new Date().toISOString();
 
-      await saveNoteToDatabase(note);
+        const currentAttachmentIds = new Set(
+          currentAttachments.map((attachment) => attachment.id)
+        );
 
-      clearEditor();
-      renderNotes();
+        const removedAttachmentIds = originalAttachmentIds.filter(
+          (id) => !currentAttachmentIds.has(id)
+        );
 
-      statusText.textContent = "Note saved successfully.";
+        const newAttachments = currentAttachments.filter(
+          (attachment) => attachment.isNew
+        );
+
+        const note = {
+          id: noteId,
+          title: title,
+          text: text,
+          attachmentCount: currentAttachments.length,
+          createdAt: editingCreatedAt || now,
+          updatedAt: now
+        };
+
+        await saveNoteAndAttachments(
+          note,
+          newAttachments,
+          removedAttachmentIds
+        );
+
+        clearEditor();
+        await renderNotes();
+        await updateStorageInfo();
+
+        statusText.textContent = "Note saved successfully.";
+      } catch (error) {
+        console.error(error);
+        statusText.textContent =
+          "The note could not save. Check your available device storage.";
+      } finally {
+        saveBtn.disabled = false;
+      }
     });
 
     cancelBtn.addEventListener("click", function () {
@@ -576,135 +1177,75 @@
     async function renderNotes() {
       notesDashboard.innerHTML = "";
 
-      let notes = await getAllNotes();
+      const notes = await getAllNotes();
 
-      notes.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+      notes.sort(function (a, b) {
+        return new Date(b.updatedAt) - new Date(a.updatedAt);
+      });
 
-      if (notes.length === 0) {
-        emptyMessage.style.display = "block";
-      } else {
-        emptyMessage.style.display = "none";
-      }
+      emptyMessage.style.display = notes.length === 0 ? "block" : "none";
 
       notes.forEach((note) => {
-        const noteCard = document.createElement("div");
+        const noteCard = document.createElement("article");
         noteCard.className = "note-card";
 
         const noteTitle = document.createElement("h3");
         noteTitle.textContent = note.title;
 
         const dateInfo = document.createElement("small");
-        dateInfo.textContent = "Updated: " + new Date(note.updatedAt).toLocaleString();
-
-        const noteText = document.createElement("p");
-        noteText.className = "note-text";
-        noteText.textContent = note.text;
-
-        const mediaBox = document.createElement("div");
-        mediaBox.className = "note-media";
-
-        if (note.attachments && note.attachments.length > 0) {
-          note.attachments.forEach((attachment) => {
-            const mediaItem = createMediaElement(attachment);
-            mediaBox.appendChild(mediaItem);
-          });
-        }
-
-        const buttonsBox = document.createElement("div");
-        buttonsBox.className = "card-buttons";
-
-        const editBtn = document.createElement("button");
-        editBtn.className = "edit-btn";
-        editBtn.textContent = "Edit";
-        editBtn.onclick = function () {
-          editNote(note.id);
-        };
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.className = "delete-btn";
-        deleteBtn.textContent = "Delete";
-        deleteBtn.onclick = function () {
-          deleteNote(note.id);
-        };
-
-        buttonsBox.appendChild(editBtn);
-        buttonsBox.appendChild(deleteBtn);
+        dateInfo.textContent =
+          "Updated: " + new Date(note.updatedAt).toLocaleString();
 
         noteCard.appendChild(noteTitle);
         noteCard.appendChild(dateInfo);
 
         if (note.text) {
+          const noteText = document.createElement("p");
+          noteText.className = "note-text";
+          noteText.textContent = note.text;
           noteCard.appendChild(noteText);
         }
 
-        if (note.attachments && note.attachments.length > 0) {
-          noteCard.appendChild(mediaBox);
+        if (note.attachmentCount > 0) {
+          const mediaButton = document.createElement("button");
+          mediaButton.className = "note-media-btn";
+          mediaButton.textContent =
+            "📎 Open " +
+            note.attachmentCount +
+            (note.attachmentCount === 1
+              ? " Attachment"
+              : " Attachments");
+
+          mediaButton.onclick = function () {
+            openSavedAttachments(note);
+          };
+
+          noteCard.appendChild(mediaButton);
         }
 
-        noteCard.appendChild(buttonsBox);
+        const buttonsBox = document.createElement("div");
+        buttonsBox.className = "card-buttons";
 
-        notesDashboard.appendChild(noteCard);
-      });
-    }
-
-    function renderAttachmentPreview() {
-      attachmentPreview.innerHTML = "";
-
-      if (currentAttachments.length === 0) {
-        attachmentPreview.innerHTML = "<p>No attachments yet.</p>";
-        return;
-      }
-
-      currentAttachments.forEach((attachment, index) => {
-        const item = createMediaElement(attachment);
-        item.classList.add("preview-item");
-
-        const removeBtn = document.createElement("button");
-        removeBtn.className = "remove-media-btn";
-        removeBtn.textContent = "Remove Attachment";
-        removeBtn.onclick = function () {
-          currentAttachments.splice(index, 1);
-          renderAttachmentPreview();
+        const editButton = document.createElement("button");
+        editButton.className = "edit-btn";
+        editButton.textContent = "Edit";
+        editButton.onclick = function () {
+          editNote(note.id);
         };
 
-        item.appendChild(removeBtn);
-        attachmentPreview.appendChild(item);
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "delete-btn";
+        deleteButton.textContent = "Delete";
+        deleteButton.onclick = function () {
+          deleteNote(note.id);
+        };
+
+        buttonsBox.appendChild(editButton);
+        buttonsBox.appendChild(deleteButton);
+
+        noteCard.appendChild(buttonsBox);
+        notesDashboard.appendChild(noteCard);
       });
-    }
-
-    function createMediaElement(attachment) {
-      const item = document.createElement("div");
-      item.className = "media-item";
-
-      const name = document.createElement("p");
-      name.textContent = attachment.name;
-
-      const url = URL.createObjectURL(attachment.blob);
-
-      item.appendChild(name);
-
-      if (attachment.type.startsWith("image/")) {
-        const img = document.createElement("img");
-        img.src = url;
-        img.alt = attachment.name;
-        item.appendChild(img);
-      } else if (attachment.type.startsWith("video/")) {
-        const video = document.createElement("video");
-        video.src = url;
-        video.controls = true;
-        item.appendChild(video);
-      } else if (attachment.type.startsWith("audio/")) {
-        const audio = document.createElement("audio");
-        audio.src = url;
-        audio.controls = true;
-        item.appendChild(audio);
-      } else {
-        const unknown = document.createElement("p");
-        unknown.textContent = "Unsupported attachment preview.";
-        item.appendChild(unknown);
-      }
-
-      return item;
     }
 
     async function editNote(id) {
@@ -714,64 +1255,269 @@
         return;
       }
 
+      const attachmentMetadata = await getAttachmentMetadata(id);
+
       titleInput.value = note.title;
       textInput.value = note.text;
 
-      currentAttachments = note.attachments || [];
+      currentAttachments = attachmentMetadata.map((attachment) => ({
+        ...attachment,
+        isNew: false
+      }));
+
+      originalAttachmentIds = attachmentMetadata.map(
+        (attachment) => attachment.id
+      );
+
       editingId = note.id;
       editingCreatedAt = note.createdAt;
 
       saveBtn.textContent = "Update Note";
       cancelBtn.style.display = "block";
 
-      renderAttachmentPreview();
+      renderAttachmentList();
 
       window.scrollTo({
         top: 0,
         behavior: "smooth"
       });
 
-      statusText.textContent = "Editing note.";
+      statusText.textContent =
+        "Editing note. Media remains unloaded until you press Open.";
     }
 
     async function deleteNote(id) {
-      const confirmDelete = confirm("Are you sure you want to delete this note?");
+      const shouldDelete = confirm(
+        "Are you sure you want to delete this note and all of its attachments?"
+      );
 
-      if (!confirmDelete) {
+      if (!shouldDelete) {
         return;
       }
 
-      await deleteNoteFromDatabase(id);
+      try {
+        await deleteNoteAndAttachments(id);
 
-      if (editingId === id) {
-        clearEditor();
+        if (editingId === id) {
+          clearEditor();
+        }
+
+        await renderNotes();
+        await updateStorageInfo();
+
+        statusText.textContent = "Note deleted.";
+      } catch (error) {
+        statusText.textContent = "The note could not be deleted.";
       }
-
-      renderNotes();
-
-      statusText.textContent = "Note deleted.";
     }
 
     function clearEditor() {
       titleInput.value = "";
       textInput.value = "";
+
       currentAttachments = [];
+      originalAttachmentIds = [];
+
       editingId = null;
       editingCreatedAt = null;
 
       saveBtn.textContent = "Save Note";
       cancelBtn.style.display = "none";
 
-      renderAttachmentPreview();
+      renderAttachmentList();
     }
+
+    async function openSavedAttachments(note) {
+      const loading = document.createElement("p");
+      loading.className = "loading-text";
+      loading.textContent = "Loading attachment list...";
+
+      const requestNumber = showModal(
+        "Attachments - " + note.title,
+        loading
+      );
+
+      try {
+        const attachments = await getAttachmentMetadata(note.id);
+
+        if (requestNumber !== modalRequestNumber || mediaModal.hidden) {
+          return;
+        }
+
+        const list = document.createElement("div");
+        list.className = "attachment-list";
+
+        if (attachments.length === 0) {
+          const emptyText = document.createElement("p");
+          emptyText.className = "modal-empty";
+          emptyText.textContent = "No attachments found.";
+          list.appendChild(emptyText);
+        } else {
+          attachments.forEach((attachment) => {
+            const row = createAttachmentRow(
+              attachment,
+              function () {
+                openAttachmentViewer(attachment, function () {
+                  openSavedAttachments(note);
+                });
+              }
+            );
+
+            list.appendChild(row);
+          });
+        }
+
+        showModal("Attachments - " + note.title, list);
+      } catch (error) {
+        const errorText = document.createElement("p");
+        errorText.className = "modal-empty";
+        errorText.textContent = "Attachments could not load.";
+
+        showModal("Attachments", errorText);
+      }
+    }
+
+    async function openAttachmentViewer(attachment, backAction = null) {
+      const loading = document.createElement("p");
+      loading.className = "loading-text";
+      loading.textContent = "Opening attachment...";
+
+      const requestNumber = showModal(
+        "Opening attachment",
+        loading,
+        backAction
+      );
+
+      try {
+        const blob = attachment.blob
+          ? attachment.blob
+          : await getAttachmentBlob(attachment.id);
+
+        if (requestNumber !== modalRequestNumber || mediaModal.hidden) {
+          return;
+        }
+
+        if (!blob) {
+          throw new Error("Attachment file was not found.");
+        }
+
+        releaseActiveObjectUrl();
+        activeObjectUrl = URL.createObjectURL(blob);
+
+        const viewer = document.createElement("div");
+
+        const info = document.createElement("p");
+        info.className = "modal-file-info";
+        info.textContent =
+          getAttachmentTypeLabel(attachment.type) +
+          " • " +
+          formatFileSize(attachment.size);
+
+        viewer.appendChild(info);
+
+        if (attachment.type.startsWith("image/")) {
+          const image = document.createElement("img");
+          image.src = activeObjectUrl;
+          image.alt = attachment.name;
+          viewer.appendChild(image);
+        } else if (attachment.type.startsWith("video/")) {
+          const video = document.createElement("video");
+          video.src = activeObjectUrl;
+          video.controls = true;
+          video.playsInline = true;
+          video.preload = "metadata";
+          viewer.appendChild(video);
+        } else if (attachment.type.startsWith("audio/")) {
+          const audio = document.createElement("audio");
+          audio.src = activeObjectUrl;
+          audio.controls = true;
+          audio.preload = "none";
+          viewer.appendChild(audio);
+        } else {
+          const unsupported = document.createElement("p");
+          unsupported.className = "modal-empty";
+          unsupported.textContent =
+            "This attachment type cannot preview in the app.";
+          viewer.appendChild(unsupported);
+        }
+
+        showModal(attachment.name, viewer, backAction, true);
+      } catch (error) {
+        const errorText = document.createElement("p");
+        errorText.className = "modal-empty";
+        errorText.textContent = "This attachment could not open.";
+
+        showModal("Attachment Error", errorText, backAction);
+      }
+    }
+
+    function releaseActiveObjectUrl() {
+      if (activeObjectUrl) {
+        URL.revokeObjectURL(activeObjectUrl);
+        activeObjectUrl = null;
+      }
+    }
+
+    function showModal(title, content, backAction = null, keepObjectUrl = false) {
+      if (!keepObjectUrl) {
+        releaseActiveObjectUrl();
+      }
+
+      modalRequestNumber++;
+
+      modalTitle.textContent = title;
+      modalBody.replaceChildren(content);
+
+      modalBackAction = backAction;
+      modalBackBtn.hidden = !backAction;
+
+      mediaModal.hidden = false;
+
+      return modalRequestNumber;
+    }
+
+    function closeModal() {
+      modalRequestNumber++;
+      releaseActiveObjectUrl();
+
+      mediaModal.hidden = true;
+      modalBody.innerHTML = "";
+      modalBackAction = null;
+      modalBackBtn.hidden = true;
+    }
+
+    modalCloseBtn.addEventListener("click", closeModal);
+
+    modalBackBtn.addEventListener("click", function () {
+      if (typeof modalBackAction === "function") {
+        modalBackAction();
+      }
+    });
+
+    mediaModal.addEventListener("click", function (event) {
+      if (event.target === mediaModal) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && !mediaModal.hidden) {
+        closeModal();
+      }
+    });
 
     async function startApp() {
       try {
         await openDatabase();
-        renderAttachmentPreview();
-        renderNotes();
+        await requestPersistentStorage();
+
+        renderAttachmentList();
+        await renderNotes();
+        await updateStorageInfo();
       } catch (error) {
-        statusText.textContent = "The app could not start correctly.";
+        console.error(error);
+        statusText.textContent =
+          "The app could not start correctly in this browser.";
       }
     }
 
