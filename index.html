@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blue Notes Manager</title>
+  <title>Blue Notes Media Editor</title>
 
   <style>
     * {
@@ -21,7 +21,7 @@
     }
 
     .container {
-      max-width: 900px;
+      max-width: 1000px;
       margin: auto;
     }
 
@@ -38,6 +38,7 @@
 
     header p {
       color: #b7ddf5;
+      line-height: 1.5;
     }
 
     .note-box {
@@ -60,45 +61,67 @@
     }
 
     .note-box textarea {
-      resize: none;
-      height: 120px;
+      resize: vertical;
+      min-height: 130px;
     }
 
-    button {
+    button,
+    .file-label {
       border: none;
       padding: 12px 18px;
       border-radius: 10px;
       cursor: pointer;
       font-weight: bold;
       transition: 0.2s;
+      text-align: center;
+      font-size: 0.95rem;
     }
 
-    .voice-btn {
+    .tools {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .file-label {
       background: #bae6fd;
       color: #04243d;
-      width: 100%;
-      font-size: 1rem;
-      margin-bottom: 10px;
+      display: block;
     }
 
-    .voice-btn:hover {
+    .file-label:hover {
       background: #e0f2fe;
     }
 
-    .voice-btn.listening {
+    input[type="file"] {
+      display: none;
+    }
+
+    .record-btn {
       background: #22c55e;
       color: white;
     }
 
-    .voice-status {
-      text-align: center;
-      color: #d9f1ff;
-      margin-bottom: 10px;
-      font-size: 0.9rem;
-      min-height: 20px;
+    .record-btn:hover {
+      background: #16a34a;
     }
 
-    .add-btn {
+    .stop-btn {
+      background: #ef4444;
+      color: white;
+    }
+
+    .stop-btn:hover {
+      background: #dc2626;
+    }
+
+    .stop-btn:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+
+    .save-btn {
       background: #38bdf8;
       color: #04243d;
       width: 100%;
@@ -106,7 +129,7 @@
       margin-bottom: 10px;
     }
 
-    .add-btn:hover {
+    .save-btn:hover {
       background: #7dd3fc;
     }
 
@@ -122,6 +145,74 @@
       background: #475569;
     }
 
+    .status {
+      color: #d9f1ff;
+      text-align: center;
+      margin-bottom: 10px;
+      min-height: 22px;
+      font-size: 0.9rem;
+    }
+
+    .preview-title {
+      color: #d9f1ff;
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+
+    .attachment-preview,
+    .note-media {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .preview-item,
+    .media-item {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 10px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .preview-item p,
+    .media-item p {
+      font-size: 0.85rem;
+      margin-bottom: 8px;
+      word-break: break-word;
+      color: #d9f1ff;
+    }
+
+    .preview-item img,
+    .media-item img {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .preview-item video,
+    .media-item video {
+      width: 100%;
+      max-height: 240px;
+      border-radius: 10px;
+      background: black;
+    }
+
+    .preview-item audio,
+    .media-item audio {
+      width: 100%;
+    }
+
+    .remove-media-btn {
+      background: #ef4444;
+      color: white;
+      width: 100%;
+      padding: 8px;
+      font-size: 0.8rem;
+      margin-top: 8px;
+    }
+
     .dashboard-title {
       margin-bottom: 15px;
       color: #d9f1ff;
@@ -129,7 +220,7 @@
 
     .notes-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 18px;
     }
 
@@ -147,21 +238,35 @@
       color: #075985;
     }
 
-    .note-card p {
+    .note-card .note-text {
       line-height: 1.5;
       margin-bottom: 15px;
       white-space: pre-wrap;
     }
 
+    .note-card small {
+      display: block;
+      color: #0369a1;
+      margin-bottom: 12px;
+    }
+
+    .note-card .media-item {
+      background: #bae6fd;
+    }
+
+    .note-card .media-item p {
+      color: #082f49;
+    }
+
     .card-buttons {
       display: flex;
       gap: 10px;
+      margin-top: 15px;
     }
 
     .edit-btn {
       background: #0ea5e9;
       color: white;
-      font-size: 0.9rem;
       flex: 1;
     }
 
@@ -172,7 +277,6 @@
     .delete-btn {
       background: #ef4444;
       color: white;
-      font-size: 0.9rem;
       flex: 1;
     }
 
@@ -220,19 +324,29 @@
 <body>
   <div class="container">
     <header>
-      <h1>Blue Notes Manager</h1>
-      <p>Add, save, edit, remove, and create notes using your voice.</p>
+      <h1>Blue Notes Media Editor</h1>
+      <p>Create notes with text, photos, videos, and recorded voice notes.</p>
     </header>
 
     <section class="note-box">
       <input type="text" id="noteTitle" placeholder="Note title..." />
       <textarea id="noteText" placeholder="Write your note here..."></textarea>
 
-      <button class="voice-btn" id="voiceBtn" onclick="startVoiceNote()">🎤 Start Voice Note</button>
-      <p class="voice-status" id="voiceStatus"></p>
+      <div class="tools">
+        <label for="mediaInput" class="file-label">Add Photos or Videos</label>
+        <input type="file" id="mediaInput" accept="image/*,video/*" multiple />
 
-      <button class="add-btn" id="mainBtn" onclick="addOrUpdateNote()">Add Note</button>
-      <button class="cancel-btn" id="cancelBtn" onclick="cancelEdit()">Cancel Edit</button>
+        <button class="record-btn" id="recordBtn">Start Voice Recording</button>
+        <button class="stop-btn" id="stopBtn" disabled>Stop Recording</button>
+      </div>
+
+      <p class="status" id="statusText"></p>
+
+      <p class="preview-title">Current Attachments</p>
+      <div class="attachment-preview" id="attachmentPreview"></div>
+
+      <button class="save-btn" id="saveBtn">Save Note</button>
+      <button class="cancel-btn" id="cancelBtn">Cancel Edit</button>
     </section>
 
     <h2 class="dashboard-title">Notes Dashboard</h2>
@@ -242,29 +356,229 @@
     <p class="empty-message" id="emptyMessage">No notes yet. Add your first note above.</p>
 
     <footer>
-      <p>Made with HTML, CSS and JavaScript</p>
+      <p>Made with HTML, CSS, JavaScript and IndexedDB</p>
     </footer>
   </div>
 
   <script>
     const titleInput = document.getElementById("noteTitle");
     const textInput = document.getElementById("noteText");
+    const mediaInput = document.getElementById("mediaInput");
+    const attachmentPreview = document.getElementById("attachmentPreview");
     const notesDashboard = document.getElementById("notesDashboard");
     const emptyMessage = document.getElementById("emptyMessage");
-    const mainBtn = document.getElementById("mainBtn");
+    const saveBtn = document.getElementById("saveBtn");
     const cancelBtn = document.getElementById("cancelBtn");
-    const voiceBtn = document.getElementById("voiceBtn");
-    const voiceStatus = document.getElementById("voiceStatus");
+    const recordBtn = document.getElementById("recordBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const statusText = document.getElementById("statusText");
 
-    let notes = JSON.parse(localStorage.getItem("notes")) || [];
-    let editingIndex = null;
+    const DB_NAME = "BlueNotesMediaDB";
+    const STORE_NAME = "notes";
 
-    function saveNotes() {
-      localStorage.setItem("notes", JSON.stringify(notes));
+    let db;
+    let currentAttachments = [];
+    let editingId = null;
+    let editingCreatedAt = null;
+
+    let mediaRecorder;
+    let audioChunks = [];
+    let recordingStream;
+
+    function openDatabase() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, 1);
+
+        request.onupgradeneeded = function (event) {
+          const database = event.target.result;
+
+          if (!database.objectStoreNames.contains(STORE_NAME)) {
+            database.createObjectStore(STORE_NAME, { keyPath: "id" });
+          }
+        };
+
+        request.onsuccess = function (event) {
+          db = event.target.result;
+          resolve(db);
+        };
+
+        request.onerror = function () {
+          reject("Database failed to open.");
+        };
+      });
     }
 
-    function renderNotes() {
+    function saveNoteToDatabase(note) {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(STORE_NAME, "readwrite");
+        const store = transaction.objectStore(STORE_NAME);
+        const request = store.put(note);
+
+        request.onsuccess = function () {
+          resolve();
+        };
+
+        request.onerror = function () {
+          reject("Note failed to save.");
+        };
+      });
+    }
+
+    function getAllNotes() {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(STORE_NAME, "readonly");
+        const store = transaction.objectStore(STORE_NAME);
+        const request = store.getAll();
+
+        request.onsuccess = function () {
+          resolve(request.result);
+        };
+
+        request.onerror = function () {
+          reject("Notes failed to load.");
+        };
+      });
+    }
+
+    function getNoteById(id) {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(STORE_NAME, "readonly");
+        const store = transaction.objectStore(STORE_NAME);
+        const request = store.get(id);
+
+        request.onsuccess = function () {
+          resolve(request.result);
+        };
+
+        request.onerror = function () {
+          reject("Note failed to load.");
+        };
+      });
+    }
+
+    function deleteNoteFromDatabase(id) {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(STORE_NAME, "readwrite");
+        const store = transaction.objectStore(STORE_NAME);
+        const request = store.delete(id);
+
+        request.onsuccess = function () {
+          resolve();
+        };
+
+        request.onerror = function () {
+          reject("Note failed to delete.");
+        };
+      });
+    }
+
+    mediaInput.addEventListener("change", function () {
+      const files = Array.from(mediaInput.files);
+
+      files.forEach((file) => {
+        currentAttachments.push({
+          id: crypto.randomUUID(),
+          name: file.name,
+          type: file.type,
+          blob: file
+        });
+      });
+
+      mediaInput.value = "";
+      renderAttachmentPreview();
+      statusText.textContent = "Media added to the note.";
+    });
+
+    recordBtn.addEventListener("click", async function () {
+      if (!navigator.mediaDevices || !window.MediaRecorder) {
+        statusText.textContent = "Voice recording is not supported in this browser.";
+        return;
+      }
+
+      try {
+        recordingStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+        audioChunks = [];
+        mediaRecorder = new MediaRecorder(recordingStream);
+
+        mediaRecorder.ondataavailable = function (event) {
+          audioChunks.push(event.data);
+        };
+
+        mediaRecorder.onstop = function () {
+          const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+
+          currentAttachments.push({
+            id: crypto.randomUUID(),
+            name: "Voice Note " + new Date().toLocaleString(),
+            type: "audio/webm",
+            blob: audioBlob
+          });
+
+          recordingStream.getTracks().forEach((track) => track.stop());
+
+          renderAttachmentPreview();
+
+          statusText.textContent = "Voice recording added to the note.";
+          recordBtn.disabled = false;
+          stopBtn.disabled = true;
+        };
+
+        mediaRecorder.start();
+
+        statusText.textContent = "Recording... speak now.";
+        recordBtn.disabled = true;
+        stopBtn.disabled = false;
+      } catch (error) {
+        statusText.textContent = "Microphone permission was denied or unavailable.";
+      }
+    });
+
+    stopBtn.addEventListener("click", function () {
+      if (mediaRecorder && mediaRecorder.state === "recording") {
+        mediaRecorder.stop();
+      }
+    });
+
+    saveBtn.addEventListener("click", async function () {
+      const title = titleInput.value.trim() || "Untitled Note";
+      const text = textInput.value.trim();
+
+      if (title === "Untitled Note" && text === "" && currentAttachments.length === 0) {
+        alert("Please write something or add media before saving.");
+        return;
+      }
+
+      const now = new Date().toISOString();
+
+      const note = {
+        id: editingId || crypto.randomUUID(),
+        title: title,
+        text: text,
+        attachments: currentAttachments,
+        createdAt: editingCreatedAt || now,
+        updatedAt: now
+      };
+
+      await saveNoteToDatabase(note);
+
+      clearEditor();
+      renderNotes();
+
+      statusText.textContent = "Note saved successfully.";
+    });
+
+    cancelBtn.addEventListener("click", function () {
+      clearEditor();
+      statusText.textContent = "Edit canceled.";
+    });
+
+    async function renderNotes() {
       notesDashboard.innerHTML = "";
+
+      let notes = await getAllNotes();
+
+      notes.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
       if (notes.length === 0) {
         emptyMessage.style.display = "block";
@@ -272,15 +586,29 @@
         emptyMessage.style.display = "none";
       }
 
-      notes.forEach((note, index) => {
+      notes.forEach((note) => {
         const noteCard = document.createElement("div");
         noteCard.className = "note-card";
 
         const noteTitle = document.createElement("h3");
         noteTitle.textContent = note.title;
 
+        const dateInfo = document.createElement("small");
+        dateInfo.textContent = "Updated: " + new Date(note.updatedAt).toLocaleString();
+
         const noteText = document.createElement("p");
+        noteText.className = "note-text";
         noteText.textContent = note.text;
+
+        const mediaBox = document.createElement("div");
+        mediaBox.className = "note-media";
+
+        if (note.attachments && note.attachments.length > 0) {
+          note.attachments.forEach((attachment) => {
+            const mediaItem = createMediaElement(attachment);
+            mediaBox.appendChild(mediaItem);
+          });
+        }
 
         const buttonsBox = document.createElement("div");
         buttonsBox.className = "card-buttons";
@@ -289,145 +617,165 @@
         editBtn.className = "edit-btn";
         editBtn.textContent = "Edit";
         editBtn.onclick = function () {
-          editNote(index);
+          editNote(note.id);
         };
 
         const deleteBtn = document.createElement("button");
         deleteBtn.className = "delete-btn";
-        deleteBtn.textContent = "Remove";
+        deleteBtn.textContent = "Delete";
         deleteBtn.onclick = function () {
-          deleteNote(index);
+          deleteNote(note.id);
         };
 
         buttonsBox.appendChild(editBtn);
         buttonsBox.appendChild(deleteBtn);
 
         noteCard.appendChild(noteTitle);
-        noteCard.appendChild(noteText);
+        noteCard.appendChild(dateInfo);
+
+        if (note.text) {
+          noteCard.appendChild(noteText);
+        }
+
+        if (note.attachments && note.attachments.length > 0) {
+          noteCard.appendChild(mediaBox);
+        }
+
         noteCard.appendChild(buttonsBox);
 
         notesDashboard.appendChild(noteCard);
       });
     }
 
-    function addOrUpdateNote() {
-      const title = titleInput.value.trim();
-      const text = textInput.value.trim();
+    function renderAttachmentPreview() {
+      attachmentPreview.innerHTML = "";
 
-      if (title === "" || text === "") {
-        alert("Please write a title and a note.");
+      if (currentAttachments.length === 0) {
+        attachmentPreview.innerHTML = "<p>No attachments yet.</p>";
         return;
       }
 
-      if (editingIndex === null) {
-        notes.push({
-          title: title,
-          text: text
-        });
-      } else {
-        notes[editingIndex] = {
-          title: title,
-          text: text
+      currentAttachments.forEach((attachment, index) => {
+        const item = createMediaElement(attachment);
+        item.classList.add("preview-item");
+
+        const removeBtn = document.createElement("button");
+        removeBtn.className = "remove-media-btn";
+        removeBtn.textContent = "Remove Attachment";
+        removeBtn.onclick = function () {
+          currentAttachments.splice(index, 1);
+          renderAttachmentPreview();
         };
 
-        editingIndex = null;
-        mainBtn.textContent = "Add Note";
-        cancelBtn.style.display = "none";
-      }
-
-      saveNotes();
-      renderNotes();
-
-      titleInput.value = "";
-      textInput.value = "";
+        item.appendChild(removeBtn);
+        attachmentPreview.appendChild(item);
+      });
     }
 
-    function editNote(index) {
-      titleInput.value = notes[index].title;
-      textInput.value = notes[index].text;
+    function createMediaElement(attachment) {
+      const item = document.createElement("div");
+      item.className = "media-item";
 
-      editingIndex = index;
-      mainBtn.textContent = "Update Note";
+      const name = document.createElement("p");
+      name.textContent = attachment.name;
+
+      const url = URL.createObjectURL(attachment.blob);
+
+      item.appendChild(name);
+
+      if (attachment.type.startsWith("image/")) {
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = attachment.name;
+        item.appendChild(img);
+      } else if (attachment.type.startsWith("video/")) {
+        const video = document.createElement("video");
+        video.src = url;
+        video.controls = true;
+        item.appendChild(video);
+      } else if (attachment.type.startsWith("audio/")) {
+        const audio = document.createElement("audio");
+        audio.src = url;
+        audio.controls = true;
+        item.appendChild(audio);
+      } else {
+        const unknown = document.createElement("p");
+        unknown.textContent = "Unsupported attachment preview.";
+        item.appendChild(unknown);
+      }
+
+      return item;
+    }
+
+    async function editNote(id) {
+      const note = await getNoteById(id);
+
+      if (!note) {
+        return;
+      }
+
+      titleInput.value = note.title;
+      textInput.value = note.text;
+
+      currentAttachments = note.attachments || [];
+      editingId = note.id;
+      editingCreatedAt = note.createdAt;
+
+      saveBtn.textContent = "Update Note";
       cancelBtn.style.display = "block";
+
+      renderAttachmentPreview();
 
       window.scrollTo({
         top: 0,
         behavior: "smooth"
       });
+
+      statusText.textContent = "Editing note.";
     }
 
-    function cancelEdit() {
-      editingIndex = null;
+    async function deleteNote(id) {
+      const confirmDelete = confirm("Are you sure you want to delete this note?");
 
+      if (!confirmDelete) {
+        return;
+      }
+
+      await deleteNoteFromDatabase(id);
+
+      if (editingId === id) {
+        clearEditor();
+      }
+
+      renderNotes();
+
+      statusText.textContent = "Note deleted.";
+    }
+
+    function clearEditor() {
       titleInput.value = "";
       textInput.value = "";
+      currentAttachments = [];
+      editingId = null;
+      editingCreatedAt = null;
 
-      mainBtn.textContent = "Add Note";
+      saveBtn.textContent = "Save Note";
       cancelBtn.style.display = "none";
+
+      renderAttachmentPreview();
     }
 
-    function deleteNote(index) {
-      notes.splice(index, 1);
-
-      if (editingIndex === index) {
-        cancelEdit();
-      } else if (editingIndex !== null && editingIndex > index) {
-        editingIndex--;
-      }
-
-      saveNotes();
-      renderNotes();
-    }
-
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let recognition;
-
-    if (SpeechRecognition) {
-      recognition = new SpeechRecognition();
-
-      recognition.lang = "en-US";
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      recognition.onstart = function () {
-        voiceStatus.textContent = "Listening... speak now.";
-        voiceBtn.textContent = "🎙️ Listening...";
-        voiceBtn.classList.add("listening");
-      };
-
-      recognition.onresult = function (event) {
-        const spokenText = event.results[0][0].transcript;
-
-        if (textInput.value.trim() === "") {
-          textInput.value = spokenText;
-        } else {
-          textInput.value += " " + spokenText;
-        }
-
-        voiceStatus.textContent = "Voice added to your note.";
-      };
-
-      recognition.onerror = function () {
-        voiceStatus.textContent = "Voice input failed. Please try again.";
-      };
-
-      recognition.onend = function () {
-        voiceBtn.textContent = "🎤 Start Voice Note";
-        voiceBtn.classList.remove("listening");
-      };
-    } else {
-      voiceBtn.disabled = true;
-      voiceBtn.textContent = "Voice Not Supported";
-      voiceStatus.textContent = "Your browser does not support voice notes.";
-    }
-
-    function startVoiceNote() {
-      if (recognition) {
-        recognition.start();
+    async function startApp() {
+      try {
+        await openDatabase();
+        renderAttachmentPreview();
+        renderNotes();
+      } catch (error) {
+        statusText.textContent = "The app could not start correctly.";
       }
     }
 
-    renderNotes();
+    startApp();
   </script>
 </body>
 </html>
